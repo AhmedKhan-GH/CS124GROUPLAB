@@ -1,0 +1,21 @@
+Need:
+    Linked List: In Stack/Queue implementation
+    Vector/Array: Array of waypoints ordered by user-selected resource
+        When user wants to look at a given resource, provide a list of all waypoints
+        ordered by value of that resource
+
+    Sorting algorithm: quicksort to arrange list of waypoints by resource value
+        See vector
+
+    Stack: undo button
+        Stack of recent changes made that can be undone
+        Contains pairs of (pointer to variable, original value)
+
+    Set: manageable resources
+        Set of the different resources that the user measures
+
+    Hashtable: separate chaining, stores all waypoints, hash function takes in name
+        User can search a specific waypoint by name easily
+
+    BST: menu
+        menu flowchart
