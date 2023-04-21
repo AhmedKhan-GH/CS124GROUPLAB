@@ -1,99 +1,35 @@
-#include "wxWidgets-3.2.2.1/include/wx/wx.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
 
-//Name: main.cpp
-//Purpose: wxwidgets learning
-//Author: Ahmed Khan
-
-//application class declaration
-class MyApp : public wxApp
+int main()
 {
-public:
+    Display *dpy;
+    Window w;
+    XEvent event;
+    XSizeHints sizehints;
 
-	//virtual OnInit which overrides wx's internal implementation
-	virtual bool OnInit();
-};
+    dpy = XOpenDisplay(NULL);
+    if (dpy == NULL) {
+        fprintf(stderr, "Error: could not open display\n");
+        exit(1);
+    }
 
-class MyFrame : public wxFrame
-{
-public:
-	//constructor
-	MyFrame(const wxString& title);
+    w = XCreateSimpleWindow(dpy, DefaultRootWindow(dpy), 0, 0, 640, 480, 0, 0, WhitePixel(dpy, DefaultScreen(dpy)));
+    XMapWindow(dpy, w);
 
-	//event handlers
-	void OnQuit(wxCommandEvent& event);
-	void OnAbout(wxCommandEvent& event);
+    // Set size hints to make the window unresizable
+    sizehints.flags = PMinSize | PMaxSize;
+    sizehints.min_width = sizehints.max_width = 640;
+    sizehints.min_height = sizehints.max_height = 480;
+    XSetWMNormalHints(dpy, w, &sizehints);
 
-private:
-	//this class handles events
-	DECLARE_EVENT_TABLE()
-};
+    while (1) {
+        XNextEvent(dpy, &event);
+    }
 
-
-//implements MyApp& GetApp()
-DECLARE_APP(MyApp)
-
-//give wxwidgets the means to create myapp object
-IMPLEMENT_APP(MyApp)
-
-bool MyApp::OnInit()
-{
-	//create application window object
-	MyFrame* frame = new MyFrame("Minimal wxWidgets App");
-	//show window
-	frame->Show(true);
-	//start event loop
-	return true;
+    XCloseDisplay(dpy);
+    return 0;
 }
 
-BEGIN_EVENT_TABLE(MyFrame, wxFrame)
-	EVT_MENU(wxID_ABOUT, MyFrame::OnAbout)
-	EVT_MENU(wxID_EXIT, MyFrame::OnQuit)
-END_EVENT_TABLE()
-
-void MyFrame::OnAbout(wxCommandEvent& event)
-{
-	wxString msg;
-	msg.Printf("Hello and welcome to %s", wxVERSION_STRING);
-	wxMessageBox(msg, "AboutMinimal", wxOK | wxICON_INFORMATION, this);
-}
-
-void MyFrame::OnQuit(wxCommandEvent& event)
-{
-	//destroy the frame
-	Close();
-}
-
-//#include "picture.xpm"
-
-MyFrame::MyFrame(const wxString& title) : wxFrame(NULL, wxID_ANY, title)
-{
-	//SetIcon(wxIcon(file_xpm));
-
-	wxMenuBar* menuBar = new wxMenuBar();
-	//file, edit, view, tools, help
-			
-	wxMenu* fileMenu = new wxMenu;
-	fileMenu->Append(wxID_EXIT, "E&xit\tAlt-X", "Quit this program");
-	menuBar->Append(fileMenu, "&File");
-	
-	wxMenu* editMenu = new wxMenu;
-	//add elements to edit dropdown
-	menuBar->Append(editMenu, "&Edit");
-
-	wxMenu* viewMenu = new wxMenu;
-	//add elements to view dropdown
-	menuBar->Append(viewMenu, "&View");
-
-	wxMenu* toolsMenu = new wxMenu;
-	//add elements to tool dropdown
-	menuBar->Append(toolsMenu, "&Tools");
-
-	wxMenu* helpMenu = new wxMenu;
-	helpMenu->Append(wxID_ABOUT, "&About....\tF1", "Show about dialog");
-	menuBar->Append(helpMenu, "&Help");
-	
-	SetMenuBar(menuBar);
-
-	CreateStatusBar(2);
-	SetStatusText("Welcome to wxWidgets!");
-}
