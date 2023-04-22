@@ -1,12 +1,15 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.1)
+
 project(main)
 
-# Find X11 library
-find_package(X11 REQUIRED)
+find_package(wxWidgets REQUIRED COMPONENTS core base)
 
-# Add executable
-add_executable(main main.cpp)
+include(${wxWidgets_USE_FILE})
 
-# Link against X11 library
-target_link_libraries(main ${X11_LIBRARIES})
+add_executable(main
+    main.cpp
+)
 
+target_link_libraries(main
+    ${wxWidgets_LIBRARIES}
+)

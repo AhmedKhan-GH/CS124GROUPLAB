@@ -1,85 +1,42 @@
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <X11/Xlib.h>
+#include <wx/wx.h>
+#include <wx/image.h>
+#include <wx/statbmp.h>
 
-struct PPM {
-    int width;
-    int height;
-    int maxColor;
-    unsigned char* data;
+class MyApp : public wxApp {
+public:
+    virtual bool OnInit();
 };
 
-bool readPPM(const std::string& filename, PPM& ppm) {
-    std::ifstream file(filename, std::ios::binary);
-    if (!file) {
-        std::cerr << "Error opening file: " << filename << std::endl;
-        return false;
-    }
+class MyFrame : public wxFrame {
+public:
+    MyFrame(const wxString& title);
+};
 
-    std::string magic;
-    file >> magic;
-    if (magic != "P6") {
-        std::cerr << "Invalid PPM format" << std::endl;
-        return false;
-    }
-
-    file >> ppm.width >> ppm.height >> ppm.maxColor;
-    file.ignore();
-
-    int dataSize = ppm.width * ppm.height * 3;
-    ppm.data = new unsigned char[dataSize];
-    file.read(reinterpret_cast<char*>(ppm.data), dataSize);
+bool MyApp::OnInit() {
+    MyFrame *frame = new MyFrame("Basic wxWidgets Window");
+    frame->Show(true);
     return true;
 }
 
-int main() {
-    std::string ppmFile = "jsc2016e090606.ppm";
-    PPM ppm;
-    if (!readPPM(ppmFile, ppm)) {
-        return 1;
+MyFrame::MyFrame(const wxString& title)
+    : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(640, 480)) {
+    
+    // Initialize the image handler for JPEG files
+    wxInitAllImageHandlers();
+
+    // Load the JPG image
+    wxImage image;
+    bool isLoaded = image.LoadFile("../jsc2016e090606.jpg", wxBITMAP_TYPE_JPEG);
+    if (!isLoaded) {
+        wxMessageBox("Failed to load the image", "Error", wxICON_ERROR);
+        return;
     }
 
-    Display* display = XOpenDisplay(nullptr);
-    int screen = DefaultScreen(display);
-    Window root = RootWindow(display, screen);
+    // Create a static bitmap and set the image
+    wxStaticBitmap* staticBitmap = new wxStaticBitmap(this, wxID_ANY, wxBitmap(image));
 
-    XSetWindowAttributes attributes;
-    attributes.background_pixel = WhitePixel(display, screen);
-
-    Window window = XCreateWindow(display, root, 0, 0, 640, 480, 0,
-                                  CopyFromParent, InputOutput, CopyFromParent,
-                                  CWBackPixel, &attributes);
-    XStoreName(display, window, "PPM Viewer");
-    XSelectInput(display, window, ExposureMask | KeyPressMask);
-    XMapWindow(display, window);
-
-    GC gc = XCreateGC(display, window, 0, nullptr);
-
-    XImage* image = XCreateImage(display, CopyFromParent, 24, ZPixmap, 0,
-                                 reinterpret_cast<char*>(ppm.data), ppm.width,
-                                 ppm.height, 32, 0);
-
-    bool done = false;
-    while (!done) {
-        XEvent event;
-        XNextEvent(display, &event);
-
-        switch (event.type) {
-            case Expose:
-                XPutImage(display, window, gc, image, 0, 0, 0, 0, ppm.width, ppm.height);
-                break;
-            case KeyPress:
-                done = true;
-                break;
-        }
-    }
-
-    XFree(image);
-    XFreeGC(display, gc);
-    XDestroyWindow(display, window);
-    XCloseDisplay(display);
-    delete[] ppm.data;
-
-    return 0;
+    // Center the window on the screen
+    Centre();
 }
+
+IMPLEMENT_APP(MyApp);
