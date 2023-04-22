@@ -1,100 +1,85 @@
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
 #include <iostream>
 #include <fstream>
-#include <vector>
-#include <memory>
 #include <sstream>
-#include <string>
+#include <X11/Xlib.h>
 
-struct PPMImage {
-    unsigned int width;
-    unsigned int height;
-    unsigned int max_color;
-    std::vector<unsigned char> data;
+struct PPM {
+    int width;
+    int height;
+    int maxColor;
+    unsigned char* data;
 };
 
-std::unique_ptr<PPMImage> load_ppm(const std::string &filename) {
+bool readPPM(const std::string& filename, PPM& ppm) {
     std::ifstream file(filename, std::ios::binary);
     if (!file) {
-        std::cerr << "Error opening file" << std::endl;
-        return nullptr;
+        std::cerr << "Error opening file: " << filename << std::endl;
+        return false;
     }
 
-    std::unique_ptr<PPMImage> image = std::make_unique<PPMImage>();
-    std::string line;
-
-    // Read magic number and ensure it is P6
-    std::getline(file, line);
-    if (line != "P6") {
-        std::cerr << "Invalid PPM format. Expected P6." << std::endl;
-        return nullptr;
+    std::string magic;
+    file >> magic;
+    if (magic != "P6") {
+        std::cerr << "Invalid PPM format" << std::endl;
+        return false;
     }
 
-    // Read width, height, and max color
-    while (std::getline(file, line)) {
-        if (line[0] == '#') continue;  // Skip comments
-        std::stringstream ss(line);
-        ss >> image->width >> image->height >> image->max_color;
-        break;
-    }
+    file >> ppm.width >> ppm.height >> ppm.maxColor;
+    file.ignore();
 
-    // Ignore single whitespace character
-    file.ignore(1);
-
-    // Read pixel data
-    size_t size = image->width * image->height * 3;
-    image->data.resize(size);
-    file.read(reinterpret_cast<char *>(image->data.data()), size);
-
-    return image;
+    int dataSize = ppm.width * ppm.height * 3;
+    ppm.data = new unsigned char[dataSize];
+    file.read(reinterpret_cast<char*>(ppm.data), dataSize);
+    return true;
 }
 
 int main() {
-    Display *display;
-    Window window;
-    XEvent event;
-    int screen;
-
-    display = XOpenDisplay(nullptr);
-    if (display == nullptr) {
-        std::cerr << "Cannot open display" << std::endl;
+    std::string ppmFile = "";
+    PPM ppm;
+    if (!readPPM(ppmFile, ppm)) {
         return 1;
     }
 
-    screen = DefaultScreen(display);
-    window = XCreateSimpleWindow(display, RootWindow(display, screen), 10, 10, 640, 480, 1,
-                                  BlackPixel(display, screen), WhitePixel(display, screen));
+    Display* display = XOpenDisplay(nullptr);
+    int screen = DefaultScreen(display);
+    Window root = RootWindow(display, screen);
 
+    XSetWindowAttributes attributes;
+    attributes.background_pixel = WhitePixel(display, screen);
+
+    Window window = XCreateWindow(display, root, 0, 0, 640, 480, 0,
+                                  CopyFromParent, InputOutput, CopyFromParent,
+                                  CWBackPixel, &attributes);
+    XStoreName(display, window, "PPM Viewer");
     XSelectInput(display, window, ExposureMask | KeyPressMask);
     XMapWindow(display, window);
 
-    auto image = load_ppm("jsc2016e090606.ppm");
-    if (!image) {
-        std::cerr << "Error loading image" << std::endl;
-        XCloseDisplay(display);
-        return 1;
-    }
+    GC gc = XCreateGC(display, window, 0, nullptr);
 
-    XImage *ximage = XCreateImage(display, DefaultVisual(display, screen), 24, ZPixmap, 0,
-                                  reinterpret_cast<char *>(image->data.data()), image->width, image->height, 32, 0);
+    XImage* image = XCreateImage(display, CopyFromParent, 24, ZPixmap, 0,
+                                 reinterpret_cast<char*>(ppm.data), ppm.width,
+                                 ppm.height, 32, 0);
 
-    bool running = true;
-    while (running) {
+    bool done = false;
+    while (!done) {
+        XEvent event;
         XNextEvent(display, &event);
 
-        if (event.type == Expose) {
-            XPutImage(display, window, DefaultGC(display, screen), ximage, 0, 0, 0, 0,
-                      image->width, image->height);
-	        } else if (event.type == KeyPress) {
-            running = false;
+        switch (event.type) {
+            case Expose:
+                XPutImage(display, window, gc, image, 0, 0, 0, 0, ppm.width, ppm.height);
+                break;
+            case KeyPress:
+                done = true;
+                break;
         }
     }
 
-    XDestroyImage(ximage);
+    XDestroyImage(image);
+    XFreeGC(display, gc);
     XDestroyWindow(display, window);
     XCloseDisplay(display);
+    delete[] ppm.data;
 
     return 0;
 }
-
