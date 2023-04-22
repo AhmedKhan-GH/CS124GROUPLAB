@@ -34,7 +34,7 @@ bool readPPM(const std::string& filename, PPM& ppm) {
 }
 
 int main() {
-    std::string ppmFile = "";
+    std::string ppmFile = "jsc2016e090606.ppm";
     PPM ppm;
     if (!readPPM(ppmFile, ppm)) {
         return 1;
