@@ -75,7 +75,7 @@ int main() {
         }
     }
 
-    XDestroyImage(image);
+    XFree(image);
     XFreeGC(display, gc);
     XDestroyWindow(display, window);
     XCloseDisplay(display);
