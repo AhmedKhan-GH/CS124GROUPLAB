@@ -1,6 +1,6 @@
 Need:
     Linked List: In Stack/Queue implementation
-    Vector/Array: Array of waypoints ordered by user-selected resource
+    Vector: Array of waypoints ordered by user-selected resource
         When user wants to look at a given resource, provide a list of all waypoints
         ordered by value of that resource
 
@@ -17,5 +17,5 @@ Need:
     Hashtable: separate chaining, stores all waypoints, hash function takes in name
         User can search a specific waypoint by name easily
 
-    BST: menu
+    Decision Tree: menu
         menu flowchart
