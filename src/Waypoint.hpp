@@ -1,5 +1,5 @@
-#ifndef WAYPOINT_H
-#define WAYPOINT_H
+#ifndef WAYPOINT_HPP
+#define WAYPOINT_HPP
 
 #include <string>
 #include <unordered_map>
@@ -27,4 +27,4 @@ public:
     void set_name(std::string name);
 };
 
-#endif
+#endif //WAYPOINT_HPP
