@@ -53,14 +53,7 @@ void Runtime::addLambdas()
 		if(params.empty())
 		{
 			std::cout << 
-			std::endl << "No file name provided" << 
-			std::endl;
-			return;
-		}
-		if(params[0].substr(params[0].length() - 4) != ".txt")
-		{
-			std::cout <<
-			std::endl << "File is not a .txt" <<
+			std::endl << "No filename provided" << 
 			std::endl;
 			return;
 		}
@@ -68,6 +61,13 @@ void Runtime::addLambdas()
 		{
 			std::cout << 
 			std::endl << "File does not exist" << 
+			std::endl;
+			return;
+		}
+		if(params[0].substr(params[0].length() - 4) != ".txt")
+		{
+			std::cout <<
+			std::endl << "File is not a '.txt'" <<
 			std::endl;
 			return;
 		}
@@ -82,6 +82,26 @@ void Runtime::addLambdas()
 		this->file_name = params[0];
 	};
 	addCommand("loadfile", loadFileLambda);
+
+	auto saveFileLambda = [](const std::vector<std::string>& params)
+	{
+
+	};
+	addCommand("savefile", saveFileLambda);
+
+	auto newMapLambda = [](const std::vector<std::string>& params)
+	{
+		
+	};
+	addCommand("newmap", newMapLambda);
+
+
+	auto openMapLambda = [](const std::vector<std::string>& params)
+	{
+	
+		if(Geospace == nullptr)
+	};
+	addCommand("openmap", openMapLambda);
 }
 
 void Runtime::greetMessage()

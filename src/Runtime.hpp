@@ -1,6 +1,7 @@
 #ifndef RUNTIME_HPP
 #define RUNTIME_HPP
 #include "FileManager.hpp"
+#include "Wayspace.hpp"
 #include <iostream>
 #include <unordered_map>
 #include <vector>
@@ -20,6 +21,9 @@ public:
 	void addCommand(const std::string& key, Command code);
 	void addLambdas();
 private:
+	FileManager* file_manager;
+	Wayspace* way_space;
+
 	std::string file_name;	
 	bool run_state;
 	std::unordered_map<std::string, Command> command_map;
