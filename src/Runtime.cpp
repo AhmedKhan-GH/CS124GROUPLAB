@@ -1,6 +1,6 @@
 #include "Runtime.hpp"
 
-Runtime::Runtime() : run_state(true){}
+Runtime::Runtime() : run_state(true), file_name("demo.txt"){}
 
 void Runtime::addCommand(const std::string& key, Command code)
 {
@@ -18,6 +18,7 @@ void Runtime::addLambdas()
 		std::endl << "help: lists available commands" <<
 		std::endl << "exit: terminates the program" <<
 		std::endl << "info: learn more about the program" <<
+		std::endl << "loadfile <filename.txt>: loads file to program" << 
 		std::endl;
 	};
 	addCommand("help", helpLambda);
@@ -26,7 +27,7 @@ void Runtime::addLambdas()
 	{
 		this->run_state = false;
 		std::cout <<
-		std::endl << "Thank you for using Eagle Eye." <<
+		std::endl << "Thank you for using Eagle Eye" <<
 		std::endl;
 	};
 	addCommand("exit", exitLambda);
@@ -34,18 +35,53 @@ void Runtime::addLambdas()
 	auto infoLambda = [](const std::vector<std::string>& params)
 	{
 		std::cout << 
-		std::endl << "Thank you for choosing our program." <<
+		std::endl << "Thank you for choosing Eagle Eye!" <<
 		std::endl << "Eagle Eye is a command line based" <<
-		std::endl << "waypoint mapper and  editor that lets" <<
-		std::endl << "you keep track of points of interest in" <<
-		std::endl << "a geographical space. Eagle Eye is" <<
-		std::endl << "specialized towards forest management." << 
+		std::endl << "waypoint mapper and editor that lets" <<
+		std::endl << "you keep track of points of interest" <<
+		std::endl << "in geographical space. Eagle Eye is" <<
+		std::endl << "specialized for forest management" << 
 		std::endl <<
-		std::endl << "Developed by Ahmed Khan, Gavin Silva," <<
-		std::endl << "and Adam Freed from Ohlone College CS-124" <<
+		std::endl << "Developed by Ahmed Khan, Adam Freed," <<
+		std::endl << "and Gavin Silva. Ohlone College CS-124" <<
 		std::endl;
 	};
 	addCommand("info", infoLambda);
+
+	auto loadFileLambda = [this](const std::vector<std::string>& params)
+	{
+		if(params.empty())
+		{
+			std::cout << 
+			std::endl << "No file name provided" << 
+			std::endl;
+			return;
+		}
+		if(params[0].substr(params[0].length() - 4) != ".txt")
+		{
+			std::cout <<
+			std::endl << "File is not a .txt" <<
+			std::endl;
+			return;
+		}
+		if(!FileManager::doesFileExist(params[0]))
+		{
+			std::cout << 
+			std::endl << "File does not exist" << 
+			std::endl;
+			return;
+		}
+		if(!FileManager::doesFileHaveMetadata(params[0]))
+		{
+			std::cout <<
+			std::endl << "Invalid file format" <<
+			std::endl;
+			return;	
+		}
+
+		this->file_name = params[0];
+	};
+	addCommand("loadfile", loadFileLambda);
 }
 
 void Runtime::greetMessage()
@@ -62,7 +98,7 @@ void Runtime::greetMessage()
 void Runtime::invalidCommandMessage()
 {
 	std::cout <<
-	std::endl << "invalid command, try again." <<
+	std::endl << "invalid command, try again" <<
 	std::endl;
 }
 

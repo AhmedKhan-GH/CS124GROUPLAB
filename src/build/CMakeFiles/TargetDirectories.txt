@@ -1,0 +1,3 @@
+/home/aek/Sync/SP23/CS124/Lab4/CS124GROUPLAB/src/build/CMakeFiles/main.dir
+/home/aek/Sync/SP23/CS124/Lab4/CS124GROUPLAB/src/build/CMakeFiles/edit_cache.dir
+/home/aek/Sync/SP23/CS124/Lab4/CS124GROUPLAB/src/build/CMakeFiles/rebuild_cache.dir
