@@ -41,9 +41,13 @@ void Waypoint::add_feature(std::string feature, int val) {
     features[feature] = val;
 }
 
-//"TODO"
 bool Waypoint::remove_feature(std::string feature) {
-
+    auto it = features.find(feature);
+    if (it != features.end()) 
+    {
+        features.erase(it);
+        return true;
+    }
 }
 
 void Waypoint::set_position(int x, int y) {
