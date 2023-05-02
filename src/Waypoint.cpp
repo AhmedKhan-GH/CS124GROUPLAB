@@ -6,7 +6,7 @@ Waypoint::Waypoint(std::string name, int x, int y) {
     this->y = y;
 }
 
-"TODO"
+//"TODO"
 std::string Waypoint::get_json() const {
     return "";
 }
@@ -23,6 +23,7 @@ int Waypoint::get_y() const {
     return y;
 }
 
+//iterator and pointers used
 int Waypoint::get_feature(std::string feature) const {
     auto it = features.find(feature);
     if (it != features.end()) 
@@ -40,7 +41,7 @@ void Waypoint::add_feature(std::string feature, int val) {
     features[feature] = val;
 }
 
-"TODO"
+//"TODO"
 bool Waypoint::remove_feature(std::string feature) {
 
 }
