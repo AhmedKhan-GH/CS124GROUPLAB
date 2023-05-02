@@ -24,7 +24,16 @@ int Waypoint::get_y() const {
 }
 
 int Waypoint::get_feature(std::string feature) const {
-    return features[feature];
+    auto it = features.find(feature);
+    if (it != features.end()) 
+    {
+        return it->second;
+    }
+    else
+    {
+        std::cerr << "Error: Key not found in map\n";
+        return -1;
+    }
 }
 
 void Waypoint::add_feature(std::string feature, int val) {
