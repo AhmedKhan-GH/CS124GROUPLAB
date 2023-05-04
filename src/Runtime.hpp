@@ -12,7 +12,7 @@ using Command = std::function<void(const std::vector<std::string>&)>;
 class Runtime
 {
 public:
-
+	bool booleanQuestion();
 	Runtime();
 	void greetMessage();
 	void invalidCommandMessage();

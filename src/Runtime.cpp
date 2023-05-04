@@ -7,6 +7,47 @@ void Runtime::addCommand(const std::string& key, Command code)
 	command_map.insert({key, code});
 }
 
+//COMPLETE
+//this function uses string_input to return a bool based
+//on user input
+bool Runtime::booleanQuestion()
+{
+	bool verified = false; //determines if question
+			       //loops based on invalid answer
+	bool answer; //value of the answer input by the user
+
+	std::string input; //single variable needed to store
+			   //input even over repeated iterations
+			   //of prompt
+	std::cout << "[y/n]: "; //prompt for user for valid characters,
+
+	do{
+		input = string_input(); //getting string from
+					//validated input function
+		if(input == "y") //checking for yes and setting bools
+		{
+			verified = true;
+			answer = true;
+		}
+		else if(input == "n") //checking for no and
+				      //setting bools
+		{
+			verified = true;
+			answer = false;
+		}
+		else //informing and reprompting user
+		     //in case of invalid input
+		{
+			std::cout << std::endl << "invalid, try again: ";
+			verified = false;
+		}
+	}while(!verified); //prompt loop until a desired answer
+			   //has been given
+
+	return answer;
+}
+
+
 //function signature of void return time and string vector param
 
 void Runtime::addLambdas()
@@ -53,28 +94,28 @@ void Runtime::addLambdas()
 		if(params.empty())
 		{
 			std::cout << 
-			std::endl << "No filename provided" << 
+			std::endl << "no filename provided" << 
 			std::endl;
 			return;
 		}
 		if(!FileManager::doesFileExist(params[0]))
 		{
 			std::cout << 
-			std::endl << "File does not exist" << 
+			std::endl << "file does not exist" << 
 			std::endl;
 			return;
 		}
 		if(params[0].substr(params[0].length() - 4) != ".txt")
 		{
 			std::cout <<
-			std::endl << "File is not a '.txt'" <<
+			std::endl << "file is not a '.txt'" <<
 			std::endl;
 			return;
 		}
 		if(!FileManager::doesFileHaveMetadata(params[0]))
 		{
 			std::cout <<
-			std::endl << "Invalid file format" <<
+			std::endl << "file is not formatted" <<
 			std::endl;
 			return;	
 		}
@@ -85,7 +126,23 @@ void Runtime::addLambdas()
 
 	auto saveFileLambda = [](const std::vector<std::string>& params)
 	{
-
+		if(FileManager::doesFileExist(params[0]))
+		{
+		
+			std::cout <<
+			std::endl << "file already exists, overwrite?";
+			booleanQuestion();
+		
+			
+			
+			//boolquestion asking about overwriting old file
+			//
+		}
+		
+		//savefile <filename.txt> will give filemanager class data
+		//from wayspace class and print it to a file, savefile
+		//should check if a file exists and ask if the user wants
+		//to overrwrite the data
 	};
 	addCommand("savefile", saveFileLambda);
 
@@ -99,7 +156,7 @@ void Runtime::addLambdas()
 	auto openMapLambda = [](const std::vector<std::string>& params)
 	{
 	
-		if(Geospace == nullptr)
+		
 	};
 	addCommand("openmap", openMapLambda);
 }
