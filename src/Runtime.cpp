@@ -1,4 +1,5 @@
 #include "Runtime.hpp"
+#include "Waypoint.hpp"
 
 Runtime::Runtime() : run_state(true), file_name("demo.txt"){}
 

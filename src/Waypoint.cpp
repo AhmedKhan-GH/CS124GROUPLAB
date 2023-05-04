@@ -6,7 +6,7 @@ Waypoint::Waypoint(std::string name, int x, int y) {
     this->y = y;
 }
 
-"TODO"
+//"TODO"
 std::string Waypoint::get_json() const {
     return "";
 }
@@ -23,17 +23,31 @@ int Waypoint::get_y() const {
     return y;
 }
 
+//iterator and pointers used
 int Waypoint::get_feature(std::string feature) const {
-    return features[feature];
+    auto it = features.find(feature);
+    if (it != features.end()) 
+    {
+        return it->second;
+    }
+    else
+    {
+        std::cerr << "Error: Key not found in map\n";
+        return -1;
+    }
 }
 
 void Waypoint::add_feature(std::string feature, int val) {
     features[feature] = val;
 }
 
-"TODO"
 bool Waypoint::remove_feature(std::string feature) {
-
+    auto it = features.find(feature);
+    if (it != features.end()) 
+    {
+        features.erase(it);
+        return true;
+    }
 }
 
 void Waypoint::set_position(int x, int y) {
