@@ -192,7 +192,7 @@ void hashmap::insert(Waypoint data)
 }
 
 // finds the char that is represented by a given code
-char hashmap::find(std::string name) const {
+Waypoint hashmap::find(std::string name) const {
     int index = hasher(name) % current_array_size;
     hash_node* current = table[index];
     while (current != nullptr)
