@@ -201,10 +201,10 @@ Waypoint hashmap::find(std::string name) const {
         {
             return current->data;
         }
-	else
-	{
-        	current = current->next;
-	}
+    	else
+    	{
+            	current = current->next;
+    	}
     }
     return nullchar; // failed to find char
 }
