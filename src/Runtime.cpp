@@ -103,6 +103,34 @@ void Runtime::addLambdas()
 		if(Geospace == nullptr)
 	};
 	addCommand("openmap", openMapLambda);
+	
+	//test this
+	auto sortWaypointsLambda = [](const std::vector<std::string>& params)
+	{
+		if (Waypoint.empty()) return;
+
+    		std::function<void(int, int)> quicksort;
+    		quicksort = [&](int start, int end) 
+    		{
+        		if (start >= end) return;
+        		int pivot = Waypoint[(start + end) / 2].get_feature(params[0]);
+        		int i = start, j = end;
+        		while (i <= j) 
+			{
+            			while (Waypoint[i].get_feature(params[0]) < pivot) i++;
+            			while (Waypoint[j].get_feature(params[0]) > pivot) j--;
+            			if (i <= j) 
+				{
+                			std::swap(Waypoint[i], Waypoint[j]);
+                			i++; j--;
+            			}
+        		}
+       		quicksort(start, j);
+        	quicksort(i, end);
+   	 	};
+    	quicksort(0, Waypoint.size() - 1);
+	};
+	addCommand("sortwaypoints", sortWaypointsLambda);
 }
 
 void Runtime::greetMessage()
