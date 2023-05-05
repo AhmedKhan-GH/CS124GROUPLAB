@@ -174,6 +174,7 @@ void Runtime::addLambdas()
 	};
 	addCommand("openmap", openMapLambda);
 	
+	//preferable to put this in a sort.cpp class and just call it from here
 	//test this
 	auto sortWaypointsLambda = [](const std::vector<std::string>& params)
 	{
