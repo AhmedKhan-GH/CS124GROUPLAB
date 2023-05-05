@@ -9,7 +9,7 @@ private:
     std::string name;
     int x;
     int y;
-    unordered_map<string, int> features;
+    std::unordered_map<std::string, int> features;
 
 public:
     Waypoint();

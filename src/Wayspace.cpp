@@ -1,28 +1,55 @@
 #include "Wayspace.hpp"
 
-Wayspace::Wayspace() : width(80), height(22) {};
+Wayspace::Wayspace() : active(false){}
 
-void Wayspace::fillMap(const char c)
+void Wayspace::fillSpace(const char c)
 {
-	for(auto& row : ascii_map)
+	for(auto& row : ascii_grid)
 	{
-		for(char& element : row)
+		for(char& point : row)
 		{
-			element = c;
+			point = c;
 		}
 	}	
 }
 
-void Wayspace::printMap()
+bool Wayspace::getActive()
+{
+	return this->active;
+}
+
+void Wayspace::printSpace()
 {
 	system("clear");
-	for(auto& row : ascii_map)
+	for(auto& row : ascii_grid)
 	{	
-		for(char& element : row)
+		for(char& point : row)
 		{
-			std::cout << element;
+			std::cout << point;
 		}
 		std::cout << std::endl;
 	}
 }
 
+void Wayspace::setName(std::string name)
+{
+	this->name = name;
+}
+
+void Wayspace::activate()
+{
+	this->active = true;
+}
+
+std::string Wayspace::getName()
+{
+	return this->name;
+}
+
+void Wayspace::deactivate()
+{
+	//	waypoints.clear();
+	name.clear();
+	active = false;
+	fillSpace(char(' '));
+}

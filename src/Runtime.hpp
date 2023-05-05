@@ -1,11 +1,9 @@
 #ifndef RUNTIME_HPP
 #define RUNTIME_HPP
 
+#include <cstdlib> //for console clear commands
+#include <sstream> //for command parsing
 
-// #include "Waypoint.hpp"
-// #include "Wayspace.hpp"
-
-#include <cstdlib>
 #include "FileManager.hpp"
 #include "Wayspace.hpp"
 #include "Waypoint.hpp"
@@ -13,13 +11,14 @@
 #include <unordered_map>
 #include <vector>
 #include <functional>
-#include <sstream>
+
 using Command = std::function<void(const std::vector<std::string>&)>;
 
 class Runtime
 {
 public:
 	bool booleanQuestion();
+	std::string stringInput();
 	Runtime();
 	void greetMessage();
 	void invalidCommandMessage();
@@ -29,7 +28,7 @@ public:
 	void addLambdas();
 private:
 	FileManager* file_manager;
-	Wayspace* way_space;
+	Wayspace waypoint_space;
 
 	std::string file_name;	
 	bool clear_next_enter;

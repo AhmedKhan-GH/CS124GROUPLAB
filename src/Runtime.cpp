@@ -2,13 +2,32 @@
 
 Runtime::Runtime() : run_state(true), file_name("demo.txt"), clear_next_enter(false) {}
 
-void Runtime::addCommand(const std::string& key, Command code)
+void Runtime::addCommand(const std::string& key, Command code)		//add new command lambda to map
 {
 	command_map.insert({key, code});
 }
 
+std::string Runtime::stringInput()
+{
+	std::string input;
+	bool verified = false;
+	do
+	{
+		std::getline(std::cin, input, '\n');
+		if(input.length() == 0)
+		{
+			std::cout <<
+		 	std::endl << "blank, try again: ";
+		}
+		else
+		{
+			verified = true;
+		}
+	}while(!verified);
+	return input;
+}
 
-/*
+
 //COMPLETE
 //this function uses string_input to return a bool based
 //on user input
@@ -21,17 +40,17 @@ bool Runtime::booleanQuestion()
 	std::string input; //single variable needed to store
 			   //input even over repeated iterations
 			   //of prompt
-	std::cout << "[y/n]: "; //prompt for user for valid characters,
+	std::cout << "[Y/n]: "; //prompt for user for valid characters,
 
 	do{
-		input = string_input(); //getting string from
+		input = stringInput(); //getting string from
 					//validated input function
-		if(input == "y") //checking for yes and setting bools
+		if(input == "y" || input == "Y") //checking for yes and setting bools
 		{
 			verified = true;
 			answer = true;
 		}
-		else if(input == "n") //checking for no and
+		else if(input == "n" || input == "N") //checking for no and
 				      //setting bools
 		{
 			verified = true;
@@ -49,37 +68,42 @@ bool Runtime::booleanQuestion()
 	return answer;
 }
 
-*/
+
 //function signature of void return time and string vector param
 
 void Runtime::addLambdas()
 {
-	//the help lambda displays a list of all available commands when called
+	//displays a list of all available commands when called
 	auto helpLambda = [](const std::vector<std::string>& params)
 	{
 		std::cout <<
 		std::endl << "help: lists available commands" <<
-		std::endl << "exit: terminates the program" <<
-		std::endl << "info: learn more about the program" <<
-		std::endl << "loadfile <filename.txt>: loads file to program" <<
-		std::endl << "showmap: consome waypoint display" <<		
+		std::endl << "quit: terminates the program" <<
+		std::endl << "info: credits and info about program" <<
+		std::endl <<	
+		std::endl << "makemap <name>: create new waypoint space" <<
+		std::endl << "loadmap <filename.txt>: load from file" <<
+		std::endl << "showmap: print waypoint space to console" <<
+		std::endl << "savemap <filename.txt>: save to file" <<
+		std::endl << "dletmap: delete current waypoint space" <<
+		std::endl << "exitmap: exits waypoint space visualizer" <<		
 		std::endl;
 	};
 	addCommand("help", helpLambda);
 
-	auto exitLambda = [this](const std::vector<std::string>& params)
+	//COMPLETE
+	auto quitLambda = [this](const std::vector<std::string>& params)
 	{
 		this->run_state = false;
 		std::cout <<
 		std::endl << "Thank you for using Eagle Eye" <<
 		std::endl;
 	};
-	addCommand("exit", exitLambda);
+	addCommand("quit", quitLambda);
 
 	auto infoLambda = [](const std::vector<std::string>& params)
 	{
 		std::cout << 
-		std::endl << "Thank you for choosing Eagle Eye!" <<
 		std::endl << "Eagle Eye is a command line based" <<
 		std::endl << "waypoint mapper and editor that lets" <<
 		std::endl << "you keep track of points of interest" <<
@@ -92,7 +116,7 @@ void Runtime::addLambdas()
 	};
 	addCommand("info", infoLambda);
 
-	auto loadFileLambda = [this](const std::vector<std::string>& params)
+	auto loadMapLambda = [this](const std::vector<std::string>& params)
 	{
 		if(params.empty())
 		{
@@ -122,24 +146,21 @@ void Runtime::addLambdas()
 			std::endl;
 			return;	
 		}
-
 		this->file_name = params[0];
 	};
-	addCommand("loadfile", loadFileLambda);
+	addCommand("loadmap", loadMapLambda);
 
-	auto saveFileLambda = [](const std::vector<std::string>& params)
+	auto saveMapLambda = [this](const std::vector<std::string>& params)
 	{
 		if(FileManager::doesFileExist(params[0]))
 		{
-		
 			std::cout <<
-			std::endl << "file already exists, overwrite?";
-			//bool result = booleanQuestion();
-		
-			
-			
-			//boolquestion asking about overwriting old file
-			//
+			std::endl << "file already exists, overwrite? ";
+			if(!this->booleanQuestion()) //user says no, if statement triggers and lambda returns
+			{
+				return;
+			}
+			//have file manager write to existing file
 		}
 		
 		//savefile <filename.txt> will give filemanager class data
@@ -147,33 +168,76 @@ void Runtime::addLambdas()
 		//should check if a file exists and ask if the user wants
 		//to overrwrite the data
 	};
-	addCommand("savefile", saveFileLambda);
+	addCommand("savemap", saveMapLambda);
+
+	auto exitMapLambda = [this](const std::vector<std::string>& params)
+	{
+		//throwaway command to allow user to exit map interface without any
+		//unwanted functionality being invoked
+	};
+	addCommand("exitmap", exitMapLambda);
 
 	auto showMapLambda = [this](const std::vector<std::string>& params)
 	{
+		if(!waypoint_space.getActive())
+		{
+			std::cout <<
+			std::endl << "no map in system, use makemap <name>" <<
+			std::endl << "or loadmap <filename.txt> to start" <<
+			std::endl;
+			return;
+		}
+		
 		//this is test code
 	
 		this->clear_next_enter = true;
-		Wayspace space; 
-		space.fillMap(char(45));
-		space.printMap();
+		Wayspace space; //there should be a wayspace pointer in runtime, and if showmap or savemap is called when it equals nullptr, then the user is informed they have not created a waypoint space yet
+				
+		space.fillSpace(char(45)); //rename to fillspace and printspace
+		space.printSpace();
 	};
 	addCommand("showmap", showMapLambda);
 
-	auto newMapLambda = [](const std::vector<std::string>& params)
+	auto makeMapLambda = [this](const std::vector<std::string>& params)
 	{
-		
+		if(params.empty())
+		{	
+			std::cout << 
+			std::endl << "failed to provide map name" <<
+			std::endl;
+			return;
+		}
+		this->waypoint_space.activate();
+		this->waypoint_space.setName(params[0]);
+		std::cout <<
+		std::endl << "'" << params[0] << "' successfully created" <<
+		std::endl;
 	};
-	addCommand("newmap", newMapLambda);
+	addCommand("makemap", makeMapLambda);
 
 
-	auto openMapLambda = [](const std::vector<std::string>& params)
+	auto deleteMapLambda = [this](const std::vector<std::string>& params)
 	{
-	
+		if(!this->waypoint_space.getActive())
+		{
+			std::cout <<
+			std::endl << "there is no map to delete" <<
+			std::endl;
+		}
+		std::cout <<
+		std::endl << "this is irreversible, proceed? "; 
+		if(this->booleanQuestion())
+		{
+			std::cout <<
+			std::endl << "'" << this->waypoint_space.getName() << "' successfully deleted" <<
+			std::endl;
 		
+			this->waypoint_space.deactivate();
+		}
 	};
-	addCommand("openmap", openMapLambda);
-	
+	addCommand("dletmap", deleteMapLambda);
+
+	/*	
 	//preferable to put this in a sort.cpp class and just call it from here
 	//test this
 	auto sortWaypointsLambda = [](const std::vector<std::string>& params)
@@ -202,20 +266,20 @@ void Runtime::addLambdas()
     	quicksort(0, Waypoint.size() - 1);
 	};
 	addCommand("sortwaypoints", sortWaypointsLambda);
+	*/
 }
 
-void Runtime::greetMessage()
+void Runtime::greetMessage()						//greeting user for first time
 {
 	std::cout <<
 	std::endl << "Welcome to Eagle Eye." << 
 	std::endl << 
 	std::endl << "Type 'help' for list of commands" <<
-	std::endl << "Type 'exit' to terminate program" <<
+	std::endl << "Type 'quit' to terminate program" <<
 	std::endl;
 }
 
-
-void Runtime::invalidCommandMessage()
+void Runtime::invalidCommandMessage()					//informing user of invalid command
 {
 	std::cout <<
 	std::endl << "invalid command, try again" <<
@@ -224,38 +288,39 @@ void Runtime::invalidCommandMessage()
 
 void Runtime::run()
 {
-	addLambdas();
-	greetMessage();
+	addLambdas(); 							//initializing map of events
+	greetMessage(); 						//greet user
 	while(run_state)
 	{
-		std::cout << std::endl << "> ";
+		std::cout << std::endl << "> "; 			//prompt for input
 		std::string input;
 		std::getline(std::cin, input);
 		std::istringstream iss(input);
 
-		std::string command_token;
+		std::string command_token;				//command token
 		iss >> command_token;
 		
-		std::vector<std::string> param_tokens;
+		std::vector<std::string> param_tokens;			//parameter tokens
 		std::string parsed_param;
 		
-		if(clear_next_enter){
+		if(clear_next_enter) 					//clear condition (called by showmap)
+		{
 			system("clear");
 			clear_next_enter = false;
 		}
 
-		while(iss >> parsed_param)
+		while(iss >> parsed_param)				//parsing parameter tokens
 		{
 			param_tokens.push_back(parsed_param);
 		}
 		
-		if(!command_map.count(command_token))
+		if(!command_map.count(command_token))			//invalid command token message
 		{
 			invalidCommandMessage();
 		}
 		else
 		{
-			command_map[command_token](param_tokens);
+			command_map[command_token](param_tokens);	//execution of event lambda
 		}
 	}
 }

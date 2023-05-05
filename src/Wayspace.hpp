@@ -6,12 +6,18 @@ class Wayspace
 {
 public:
 	Wayspace();
-	void fillMap(const char c);
-	void printMap();
+	void fillSpace(const char c);
+	void printSpace();
+	bool getActive();
+	void activate();
+	void deactivate();
+	void setName(std::string name);
+	std::string getName();
 private:
-	const int width;
-	const int height;
-	char ascii_map[24][80];
+	//std::vector<Waypoint> waypoints;
+	std::string name;
+	bool active;
+	char ascii_grid[22][80];
 };
 
 
