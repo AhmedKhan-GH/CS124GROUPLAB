@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/MyExecutable.dir/Runtime.cpp.o CMakeFiles/MyExecutable.dir/main.cpp.o CMakeFiles/MyExecutable.dir/FileManager.cpp.o -o MyExecutable 

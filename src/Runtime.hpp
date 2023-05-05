@@ -1,5 +1,11 @@
 #ifndef RUNTIME_HPP
 #define RUNTIME_HPP
+
+
+// #include "Waypoint.hpp"
+// #include "Wayspace.hpp"
+
+#include <cstdlib>
 #include "FileManager.hpp"
 #include "Wayspace.hpp"
 #include <iostream>
@@ -25,6 +31,7 @@ private:
 	Wayspace* way_space;
 
 	std::string file_name;	
+	bool clear_next_enter;
 	bool run_state;
 	std::unordered_map<std::string, Command> command_map;
 };

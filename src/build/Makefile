@@ -177,6 +177,30 @@ Runtime.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/Runtime.cpp.s
 .PHONY : Runtime.cpp.s
 
+Wayspace.o: Wayspace.cpp.o
+.PHONY : Wayspace.o
+
+# target to build an object file
+Wayspace.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/Wayspace.cpp.o
+.PHONY : Wayspace.cpp.o
+
+Wayspace.i: Wayspace.cpp.i
+.PHONY : Wayspace.i
+
+# target to preprocess a source file
+Wayspace.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/Wayspace.cpp.i
+.PHONY : Wayspace.cpp.i
+
+Wayspace.s: Wayspace.cpp.s
+.PHONY : Wayspace.s
+
+# target to generate assembly for a file
+Wayspace.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/Wayspace.cpp.s
+.PHONY : Wayspace.cpp.s
+
 main.o: main.cpp.o
 .PHONY : main.o
 
@@ -216,6 +240,9 @@ help:
 	@echo "... Runtime.o"
 	@echo "... Runtime.i"
 	@echo "... Runtime.s"
+	@echo "... Wayspace.o"
+	@echo "... Wayspace.i"
+	@echo "... Wayspace.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

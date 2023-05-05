@@ -1,13 +1,14 @@
 #include "Runtime.hpp"
-#include "Waypoint.hpp"
 
-Runtime::Runtime() : run_state(true), file_name("demo.txt"){}
+Runtime::Runtime() : run_state(true), file_name("demo.txt"), clear_next_enter(false) {}
 
 void Runtime::addCommand(const std::string& key, Command code)
 {
 	command_map.insert({key, code});
 }
 
+
+/*
 //COMPLETE
 //this function uses string_input to return a bool based
 //on user input
@@ -48,7 +49,7 @@ bool Runtime::booleanQuestion()
 	return answer;
 }
 
-
+*/
 //function signature of void return time and string vector param
 
 void Runtime::addLambdas()
@@ -60,7 +61,8 @@ void Runtime::addLambdas()
 		std::endl << "help: lists available commands" <<
 		std::endl << "exit: terminates the program" <<
 		std::endl << "info: learn more about the program" <<
-		std::endl << "loadfile <filename.txt>: loads file to program" << 
+		std::endl << "loadfile <filename.txt>: loads file to program" <<
+		std::endl << "showmap: consome waypoint display" <<		
 		std::endl;
 	};
 	addCommand("help", helpLambda);
@@ -132,7 +134,7 @@ void Runtime::addLambdas()
 		
 			std::cout <<
 			std::endl << "file already exists, overwrite?";
-			booleanQuestion();
+			//bool result = booleanQuestion();
 		
 			
 			
@@ -146,6 +148,17 @@ void Runtime::addLambdas()
 		//to overrwrite the data
 	};
 	addCommand("savefile", saveFileLambda);
+
+	auto showMapLambda = [this](const std::vector<std::string>& params)
+	{
+		//this is test code
+	
+		this->clear_next_enter = true;
+		Wayspace space; 
+		space.fillMap(char(45));
+		space.printMap();
+	};
+	addCommand("showmap", showMapLambda);
 
 	auto newMapLambda = [](const std::vector<std::string>& params)
 	{
@@ -197,6 +210,11 @@ void Runtime::run()
 		std::vector<std::string> param_tokens;
 		std::string parsed_param;
 		
+		if(clear_next_enter){
+			system("clear");
+			clear_next_enter = false;
+		}
+
 		while(iss >> parsed_param)
 		{
 			param_tokens.push_back(parsed_param);

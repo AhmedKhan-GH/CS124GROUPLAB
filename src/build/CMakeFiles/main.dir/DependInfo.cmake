@@ -10,6 +10,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/aek/Sync/SP23/CS124/Lab4/CS124GROUPLAB/src/FileManager.cpp" "CMakeFiles/main.dir/FileManager.cpp.o" "gcc" "CMakeFiles/main.dir/FileManager.cpp.o.d"
   "/home/aek/Sync/SP23/CS124/Lab4/CS124GROUPLAB/src/Runtime.cpp" "CMakeFiles/main.dir/Runtime.cpp.o" "gcc" "CMakeFiles/main.dir/Runtime.cpp.o.d"
+  "/home/aek/Sync/SP23/CS124/Lab4/CS124GROUPLAB/src/Wayspace.cpp" "CMakeFiles/main.dir/Wayspace.cpp.o" "gcc" "CMakeFiles/main.dir/Wayspace.cpp.o.d"
   "/home/aek/Sync/SP23/CS124/Lab4/CS124GROUPLAB/src/main.cpp" "CMakeFiles/main.dir/main.cpp.o" "gcc" "CMakeFiles/main.dir/main.cpp.o.d"
   )
 

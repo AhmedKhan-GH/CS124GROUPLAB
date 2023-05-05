@@ -3,6 +3,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/main.dir/FileManager.cpp.o.d"
   "CMakeFiles/main.dir/Runtime.cpp.o"
   "CMakeFiles/main.dir/Runtime.cpp.o.d"
+  "CMakeFiles/main.dir/Wayspace.cpp.o"
+  "CMakeFiles/main.dir/Wayspace.cpp.o.d"
   "CMakeFiles/main.dir/main.cpp.o"
   "CMakeFiles/main.dir/main.cpp.o.d"
   "main"

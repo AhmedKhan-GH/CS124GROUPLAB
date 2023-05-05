@@ -5,6 +5,7 @@ project(main)
 set(SOURCE_FILES
     Runtime.cpp
     main.cpp
+    Wayspace.cpp
     FileManager.cpp
 )
 
