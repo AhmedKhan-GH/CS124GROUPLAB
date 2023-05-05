@@ -11,10 +11,10 @@ public:
 	~hashmap();
     hashmap(); //constructor to set consts
 
-    void insert(Waypoint data);
+    void insert(Waypoint* data);
     // adds a new element to the hash map
 
-    Waypoint find(std::string name) const;
+    Waypoint* find(std::string name) const;
     // finds the Waypoint that has a given name
 
     int hasher(const std::string name) const;
@@ -27,7 +27,7 @@ private:
 	// Node for sheparate chaining
 	struct hash_node
 	{
-		Waypoint data;
+		Waypoint* data;
 		//pair of char, and cipher string key-value pairs
 		hash_node* next = nullptr;
 		//hash node is a linked list element

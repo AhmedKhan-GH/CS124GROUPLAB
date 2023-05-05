@@ -41,7 +41,7 @@ void hashmap::print() const {
         std::cout << "Bucket " << i << ": ";
         hash_node* current = table[i];
         while (current != nullptr) {
-            std::cout << current->name;
+            std::cout << current->data->name;
             current = current->next;
         }
         std::cout << std::endl;
@@ -167,11 +167,11 @@ int hashmap::element_count() const
 }
 
 // adds a new element to the hash map
-void hashmap::insert(Waypoint data)
+void hashmap::insert(Waypoint* data)
 {
 	resize_if_necessary();
 
-	int new_index = hasher(data.name) % current_array_size;
+	int new_index = hasher(data->name) % current_array_size;
 
 	hash_node* new_node = new hash_node;
     	new_node->data = data;
@@ -191,19 +191,19 @@ void hashmap::insert(Waypoint data)
 	this->current_num_elements++;
 }
 
-// finds the char that is represented by a given code
-Waypoint hashmap::find(std::string name) const {
+// finds the Waypoint with a given name
+Waypoint* hashmap::find(std::string name) const {
     int index = hasher(name) % current_array_size;
     hash_node* current = table[index];
     while (current != nullptr)
     {
-        if (current->data.name == name)
+        if (current->data->name == name)
         {
             return current->data;
         }
     	else
     	{
-            	current = current->next;
+            current = current->next;
     	}
     }
     return nullchar; // failed to find char
