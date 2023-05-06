@@ -1,6 +1,6 @@
 #include "Runtime.hpp"
 
-Runtime::Runtime() : run_state(true), file_name("demo.txt"), clear_next_enter(false) {}
+Runtime::Runtime() : run_state(true), clear_next_enter(false) {}
 
 void Runtime::addCommand(const std::string& key, Command code)		//add new command lambda to map
 {
@@ -80,6 +80,7 @@ void Runtime::addLambdas()
 		std::endl << "help: lists available commands" <<
 		std::endl << "quit: terminates the program" <<
 		std::endl << "info: credits and info about program" <<
+		std::endl << "clear: removes history from terminal" <<
 		std::endl <<	
 		std::endl << "makemap <name>: create new waypoint space" <<
 		std::endl << "loadmap <filename.txt>: load from file" <<
@@ -115,6 +116,12 @@ void Runtime::addLambdas()
 		std::endl;
 	};
 	addCommand("info", infoLambda);
+
+	auto clearLambda = [this](const std::vector<std::string>& params)
+	{
+		system("clear");
+	};
+	addCommand("clear", clearLambda);
 
 	auto loadMapLambda = [this](const std::vector<std::string>& params)
 	{
@@ -179,7 +186,7 @@ void Runtime::addLambdas()
 
 	auto showMapLambda = [this](const std::vector<std::string>& params)
 	{
-		if(!waypoint_space.getActive())
+		if(!space.getActive())
 		{
 			std::cout <<
 			std::endl << "no map in system, use makemap <name>" <<
@@ -187,14 +194,17 @@ void Runtime::addLambdas()
 			std::endl;
 			return;
 		}
-		
-		//this is test code
-	
 		this->clear_next_enter = true;
-		Wayspace space; //there should be a wayspace pointer in runtime, and if showmap or savemap is called when it equals nullptr, then the user is informed they have not created a waypoint space yet
 				
-		space.fillSpace(char(45)); //rename to fillspace and printspace
-		space.printSpace();
+		this->space.fillSpace(char(46));
+		
+		//plot waypoints and legend
+					
+		this->space.plotCompass();
+		this->space.plotHeaders();
+		//this is plotted last as it overrwrites anything under it
+
+		this->space.printSpace();
 	};
 	addCommand("showmap", showMapLambda);
 
@@ -207,8 +217,8 @@ void Runtime::addLambdas()
 			std::endl;
 			return;
 		}
-		this->waypoint_space.activate();
-		this->waypoint_space.setName(params[0]);
+		this->space.activate();
+		this->space.setName(params[0]);
 		std::cout <<
 		std::endl << "'" << params[0] << "' successfully created" <<
 		std::endl;
@@ -218,21 +228,21 @@ void Runtime::addLambdas()
 
 	auto deleteMapLambda = [this](const std::vector<std::string>& params)
 	{
-		if(!this->waypoint_space.getActive())
+		if(!this->space.getActive())
 		{
 			std::cout <<
 			std::endl << "there is no map to delete" <<
 			std::endl;
+			return;
 		}
 		std::cout <<
 		std::endl << "this is irreversible, proceed? "; 
 		if(this->booleanQuestion())
 		{
 			std::cout <<
-			std::endl << "'" << this->waypoint_space.getName() << "' successfully deleted" <<
+			std::endl << "'" << this->space.getName() << "' successfully deleted" <<
 			std::endl;
-		
-			this->waypoint_space.deactivate();
+			this->space.deactivate();
 		}
 	};
 	addCommand("dletmap", deleteMapLambda);

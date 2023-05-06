@@ -9,9 +9,12 @@ public:
 	void fillSpace(const char c);
 	void printSpace();
 	bool getActive();
+	void plotRight(int y, int x, std::string input);
+	void plotDown(int y, int x, std::string input);
 	void activate();
 	void deactivate();
 	void setName(std::string name);
+	void plotCompass();
 	std::string getName();
 private:
 	//std::vector<Waypoint> waypoints;

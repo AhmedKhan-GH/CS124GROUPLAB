@@ -28,7 +28,7 @@ public:
 	void addLambdas();
 private:
 	FileManager* file_manager;
-	Wayspace waypoint_space;
+	Wayspace space;
 
 	std::string file_name;	
 	bool clear_next_enter;
