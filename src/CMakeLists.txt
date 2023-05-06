@@ -8,7 +8,7 @@ set(SOURCE_FILES
     Wayspace.cpp
     FileManager.cpp
 	Lambdas.cpp	
-    
+	Waypoint.cpp 
 )
 
 # Create an executable target

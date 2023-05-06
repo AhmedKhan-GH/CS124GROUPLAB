@@ -8,9 +8,13 @@ class Wayspace
 {
 public:
 	Wayspace();
-	
+	~Wayspace();
+
 	void fillSpace(const char c);
 	void printSpace();
+	
+	void addWaypoint(int y, int x, std::string name);
+	void listWaypoints();
 
 	void activate();
 	void deactivate();
@@ -36,7 +40,7 @@ public:
 	void setUnit(std::string unit);
 
 private:
-	int count;
+	int accumulator;
 	int scale;
 	std::string name;
 	std::string unit;
@@ -45,7 +49,7 @@ private:
 	bool scale_set;
 
 	char ascii_grid[22][80];
-	std::vector<Waypoint> waypoints;
+	std::vector<Waypoint*> waypoints;
 };
 
 

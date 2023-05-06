@@ -1,15 +1,57 @@
 #include "Wayspace.hpp"
 
-Wayspace::Wayspace() : active(false), scale_set(false), count(0) {}
+Wayspace::Wayspace() : active(false), scale_set(false), accumulator(0) {}
 
-bool checkExistsName(std::string name)
+Wayspace::~Wayspace()
 {
-
+	for(auto& point : waypoints)
+	{
+		delete point;
+	}
 }
 
-bool checkExistsUUID(int uuid)
+void Wayspace::listWaypoints()
+{
+	std::cout <<
+	std::endl;
+	for(auto& point : waypoints)
+	{
+		std::cout << point->getName() <<
+		std::endl;
+	}
+}
+
+void Wayspace::addWaypoint(int y, int x, std::string name)
 {
 	
+	accumulator++;
+	waypoints.push_back(new Waypoint(y, x, name, accumulator));
+}
+
+bool Wayspace::checkExistName(std::string name)
+{
+	bool exists = false;
+	for(auto& point : waypoints)
+	{
+		if(point->getName() == name)
+		{
+			exists = true;
+		}
+	}
+	return exists;
+}
+
+bool Wayspace::checkExistUUID(int uuid)
+{
+	bool exists = false;
+	for(auto& point : waypoints)
+	{
+		if(point->getUUID() == uuid)
+		{
+			exists = true;
+		}
+	}
+	return exists;
 }
 
 void Wayspace::setScale(int scale)
@@ -124,4 +166,5 @@ void Wayspace::deactivate()
 	fillSpace(char(' '));
 	scale = 0;
 	scale_set = false;
+	accumulator = 0;
 }

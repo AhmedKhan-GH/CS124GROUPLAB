@@ -5,6 +5,21 @@
 void Runtime::addLambdas()
 {
 
+auto listPointsLambda = [this](const std::vector<std::string>& params)
+{
+	if(!space.getActive())
+	{
+		std::cout <<
+		std::endl << "there is no map in system" <<
+		std::endl;
+		return;
+	}
+
+	space.listWaypoints();
+
+};
+addCommand("listpoints", listPointsLambda);
+
 auto setScaleLambda = [this](const std::vector<std::string>& params)
 {
 	if(!space.getActive())
@@ -31,7 +46,7 @@ auto setScaleLambda = [this](const std::vector<std::string>& params)
 		return;
 	}
 
-	if(params[0].find_first_not_of("0123456789") != std::string::npos)
+	if(params[0].find_first_not_of("-0123456789") != std::string::npos)
 	{
 		std::cout <<
 		std::endl << "scale factor not numeric" <<
@@ -59,7 +74,7 @@ auto setScaleLambda = [this](const std::vector<std::string>& params)
 	this->space.setUnit(params[1]);
 
 	std::cout <<
-	std::endl << "one grid square equals " << params[0] << " " << params[1] << "(s)" <<
+	std::endl << "grid square equals " << params[0] << " " << params[1] << "(s)" <<
 	std::endl;
 
 };
@@ -255,7 +270,7 @@ auto deleteMapLambda = [this](const std::vector<std::string>& params)
 };
 addCommand("dletmap", deleteMapLambda);
 
-auto addWaypointLambda = [](const std::vector<std::string>& params)
+auto addWaypointLambda = [this](const std::vector<std::string>& params)
 {
 	if(!space.getActive())
 	{
@@ -269,6 +284,7 @@ auto addWaypointLambda = [](const std::vector<std::string>& params)
 	{
 		std::cout <<
 		std::endl << "no parameters provided" <<
+		std::endl << "addpoint <name> <ypos> <xpos>" <<
 		std::endl;
 		return;
 	}
@@ -277,20 +293,31 @@ auto addWaypointLambda = [](const std::vector<std::string>& params)
 	{
 		std::cout <<
 		std::endl << "not all parameters provided" <<
+		std::endl << "addpoint <name> <ypos> <xpos>" <<
 		std::endl;
 		return;
 	}
 
-	if(params[1].find_first_not_of("0123456789") != std::string::npos
-	|| params[2].find_first_not_of("0123456789") != std::string::npos)
+	if(params[1].find_first_not_of("-0123456789") != std::string::npos)
 	{
 		std::cout <<
-		std::endl << "coordinates not numeric" <<
+		std::endl << "y coordinate not numeric" <<
 		std::endl;
 		return;
 	}
+			
+	if(params[2].find_first_not_of("-0123456789") != std::string::npos)
+	{
+		std::cout <<
+		std::endl << "x coordinate not numeric" <<
+		std::endl;
+		return;
+	}
+	
+	int tempy = std::__cxx11::stoi(params[1]);
+	int tempx = std::__cxx11::stoi(params[2]);
 
-	if(stoi(params[1]) > 21 || stoi(params[1] < 0))
+	if(tempy > 21 || tempy < 0)
 	{
 		std::cout <<
 		std::endl << "y coordinate out of bounds" <<
@@ -298,7 +325,7 @@ auto addWaypointLambda = [](const std::vector<std::string>& params)
 		return;
 	}
 
-	if(stoi(params[2]) > 79 || stoi(params[2] < 0))
+	if(tempx > 79 || tempx < 0)
 	{
 		std::cout <<
 		std::endl << "x coordinate out of bounds" <<
@@ -306,6 +333,19 @@ auto addWaypointLambda = [](const std::vector<std::string>& params)
 		return;
 	}
 
+	if(space.checkExistName(params[0]))
+	{
+		std::cout << 
+		std::endl << "'" << params[0] << "' already exists in map" <<
+		std::endl;
+		return;
+	}
+
+	space.addWaypoint(tempy, tempx, params[0]);
+
+	std::cout <<
+	std::endl << "added waypoint '" << params[0] << "' to <" << tempy << "," << tempx << "> <y,x>" <<
+	std::endl;
 };
 addCommand("addpoint", addWaypointLambda);
 
