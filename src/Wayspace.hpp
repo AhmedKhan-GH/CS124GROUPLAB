@@ -2,25 +2,50 @@
 #define WAYSPACE_HPP
 #include <iostream>
 #include <cstdlib>
+#include <vector>
+#include "Waypoint.hpp"
 class Wayspace
 {
 public:
 	Wayspace();
+	
 	void fillSpace(const char c);
 	void printSpace();
-	bool getActive();
-	void plotRight(int y, int x, std::string input);
-	void plotDown(int y, int x, std::string input);
+
 	void activate();
 	void deactivate();
-	void setName(std::string name);
-	void plotCompass();
+
+	int getScale();
+	bool getActive();
+	bool getScaleSet();
 	std::string getName();
+	std::string getUnit();
+
+	void plotRight(int y, int x, std::string input);
+	void plotDown(int y, int x, std::string input);
+
+	void plotCompass();
+	void plotHeaders();
+	void plotScale();
+
+	bool checkExistName(std::string name);
+	bool checkExistUUID(int uuid);
+
+	void setScale(int scale);
+	void setName(std::string name);
+	void setUnit(std::string unit);
+
 private:
-	//std::vector<Waypoint> waypoints;
+	int count;
+	int scale;
 	std::string name;
+	std::string unit;
+
 	bool active;
+	bool scale_set;
+
 	char ascii_grid[22][80];
+	std::vector<Waypoint> waypoints;
 };
 
 
