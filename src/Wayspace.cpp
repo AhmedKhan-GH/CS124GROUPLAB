@@ -8,7 +8,7 @@ Wayspace::~Wayspace()
 	{
 		point = nullptr;
 	}
-	waypoint_map.~hashmap()
+	waypoint_map.~Hashmap()
 }
 
 void Wayspace::listWaypoints()
