@@ -14,50 +14,71 @@ auto undoAddLambda = [this](const std::vector<std::string>& params){
 
 auto listPointsLambda = [this](const std::vector<std::string>& params){
 	if(!space.getActive()) {std::cout << std::endl << "there is no map in system" << std::endl; return;}
-	space.listWaypoints();
+	space.listPoints();
 }; addCommand("listpoints", listPointsLambda);
 
 auto viewPointLambda = [this](const std::vector<std::string>& params){
 	if(!space.getActive()){std::cout << std::endl << "there is no map in system" << std::endl; return;}
 	if(params.empty()){std::cout << std::endl << "no parameters provided" << std::endl; return;}
 	if(!space.checkExistName(params[0])){std::cout << std::endl << "given point doesn't exist" << std::endl;}
-	
 	space.viewPoint(params[0]);
 }; addCommand("viewpoint", viewPointLambda);
+
+auto addFeatureLambda = [this](const std::vector<std::string>& params){
+	if(!space.getActive()){std::cout << std::endl << "there is no map in system" << std::endl; return;}
+	if(params.empty()){std::cout << std::endl << "no parameters provided" << std::endl; return;}
+	if(!space.checkExistName(params[0])){std::cout << std::endl << "given point doesn't exist" << std::endl; return;}
+	if(params.size() < 3){std::cout << std::endl << "not all parameters provided" << std::endl; return;}
+	if(params[2].find_first_not_of(".-0123456789") != std::string::npos)
+	{std::cout << std::endl << "metric not numeric" << std::endl; return;}
+	double temp = std::stod(params[2]);
+	space.pushFeature(params[0], params[1], temp);
+	std::cout << std::endl << "added '" << params[1] << ": " << temp << "' to '" << params[0] << "'" << std::endl;
+}; addCommand("addfeat", addFeatureLambda);
 
 auto setScaleLambda = [this](const std::vector<std::string>& params){
 	if(!space.getActive()){std::cout << std::endl << "there is no map in system" << std::endl; return;} //checking if map is active
 	if(space.getScaleSet()){std::cout << std::endl << "scale has already been set" << std::endl; return;} //checking if scale has already been set
 	if(params.empty()){std::cout << std::endl << "no parameters provided" << std::endl; return;} //checking if parameters have been provided
 	if(params[0].find_first_not_of("-0123456789") != std::string::npos) //checking if numerial parameter is non numeric
-	{std::cout <<std::endl << "scale factor not numeric" << std::endl; return;} 
+	{std::cout << std::endl << "scale factor not numeric" << std::endl; return;} 
 	if(stoi(params[0]) <= 0){std::cout << std::endl << "scale factor zero or negative " << std::endl; return;} //checking if scale factor is negative
 	if(params.size() < 2) {std::cout << std::endl << "not all parameters provided" << std::endl; return;} //checking if parameters are missing
 	this->space.setScale(stoi(params[0])); //setting scale
 	this->space.setUnit(params[1]);	//setting scale unit
-	std::cout << std::endl << "grid set to " << params[0] << " " << params[1] << "(s) scale" << std::endl; //indication of success to user
+	std::cout << std::endl << "grid unit set to " << params[0] << " " << params[1] << "(s)" << std::endl; //indication of success to user
 }; addCommand("setscale", setScaleLambda);
 
 //displays a list of all available commands when called
 auto helpLambda = [](const std::vector<std::string>& params){
 	std::cout <<
-	std::endl << "help: lists available commands" <<
-	std::endl << "quit: terminates the program" <<
-	std::endl << "info: credits and info about program" <<
-	std::endl << "clear: removes history from terminal" <<
+	std::endl << "help: lists all available commands and their params" <<
+	std::endl << "quit: terminates the program at any point of running" <<
+	std::endl << "info: information about program and developer credits" <<
+	std::endl << "clear: clears all command history from the terminal" <<
 	std::endl <<
-	std::endl << "makemap <name>: create new waypoint space" <<
-	std::endl << "loadmap <filename.txt>: load from file" <<
-	std::endl << "showmap: print waypoint space to console" <<
-	std::endl << "savemap <filename.txt>: save to file" <<
-	std::endl << "dletmap: delete current waypoint space" <<
-	std::endl << "exitmap: exit waypoint space visualizer" <<
-	std::endl << "setscale <number> <name>: set distance scale" <<
+	std::endl << "makemap <name>: create a new waypoint map" <<
+	std::endl << "loadmap <filename.txt>: load waypoint map from file" <<
+	std::endl << "showmap: print waypoint map to console" <<
+	std::endl << "savemap <filename.txt>: save waypoint map to file" <<
+	std::endl << "killmap: delete current waypoint space" <<
+	std::endl << "exitmap: exit waypoint map visualizer" <<
+	std::endl << "setscale <number> <name>: set map distance scale" <<
 	std::endl <<
-	std::endl << "addpoint <name> <y> <x>: add waypoint to map" <<
+	std::endl << "addpoint <name> <y> <x>: add given waypoint to map" <<
+	std::endl << "undoadd: remove instance of add back to last filesave" <<
+	std::endl << "addfeat <name> <feature> <number>: add metric to waypoint" <<
+	std::endl << "rankfeat <feature>: rank all waypoints with given feature" <<
+	std::endl << "viewpoint <name>: list coord and all metrics of a point" <<
 
 	std::endl;
 }; addCommand("help", helpLambda);
+
+auto rankFeatureLambda = [this](const std::vector<std::string>& params){
+	if(!space.getActive()){std::cout << std::endl << "no map in system" << std::endl;}
+	if(params.empty()){std::cout << std::endl <<  "no parameters provided" << std::endl;}
+	space.rankFeatures(params[0]);
+}; addCommand("rankfeat", rankFeatureLambda);
 
 //sets run state to false causing event handler loop to terminate on next cycle
 auto quitLambda = [this](const std::vector<std::string>& params){
@@ -127,7 +148,7 @@ auto showMapLambda = [this](const std::vector<std::string>& params)
 	//plot waypoints and legend
 	space.plotPoints();
 
-	space.plotCompass(); space.plotHeaders(); space.plotScale(); 
+	space.plotElements();
 	//this is plotted last as it overrwrites anything under it
 
 	space.printSpace();
@@ -143,14 +164,14 @@ auto makeMapLambda = [this](const std::vector<std::string>& params)
 	std::endl << "use 'setscale <number> <name>' next" << std::endl;
 }; addCommand("makemap", makeMapLambda);
 
-auto deleteMapLambda = [this](const std::vector<std::string>& params)
+auto killMapLambda = [this](const std::vector<std::string>& params)
 {
 	if(!this->space.getActive()){std::cout << std::endl << "there is no map in the system" << std::endl; return;}
 	std::cout << std::endl << "are you sure you want to delete " << space.getName() << "? ";
 	if(this->booleanQuestion())
 	{	std::cout << std::endl << "'" << this->space.getName() << "' successfully deleted" << std::endl;
 		this->space.deactivate();}
-}; addCommand("dletmap", deleteMapLambda);
+}; addCommand("killmap", killMapLambda);
 
 auto addWaypointLambda = [this](const std::vector<std::string>& params)
 {
@@ -170,7 +191,7 @@ auto addWaypointLambda = [this](const std::vector<std::string>& params)
 	if(tempy > 21 || tempy < 0){std::cout << std::endl << "y coordinate out of bounds" << std::endl; return;}
 	if(tempx > 79 || tempx < 0){std::cout << std::endl << "x coordinate out of bounds" << std::endl; return;}
 	if(space.checkExistName(params[0])) {std::cout << std::endl << "'" << params[0] << "' already exists in map" << std::endl; return;}
-	space.addWaypoint(tempy, tempx, params[0]);
+	space.addPoint(tempy, tempx, params[0]);
 	std::cout << std::endl << "added waypoint '" << params[0] << "' to <" << tempy << "," << tempx << ">" << std::endl;
 };
 addCommand("addpoint", addWaypointLambda);

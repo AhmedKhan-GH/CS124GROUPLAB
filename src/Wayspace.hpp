@@ -18,9 +18,13 @@ public:
 	void printSpace();
 
 	void undoAdd();
-	void addWaypoint(int y, int x, std::string name);
-	void listWaypoints();
+	void addPoint(int y, int x, std::string name);
+	void listPoints();
 	void viewPoint(std::string name);
+
+	void pushFeature(std::string point, std::string type, double metric);
+	void pullFeature(std::string point, std::string type);
+	void rankFeatures(std::string type);
 
 	void activate();
 	void deactivate();
@@ -30,14 +34,11 @@ public:
 	bool getScaleSet();
 	std::string getName();
 	std::string getUnit();
-	
 
 	void plotRight(int y, int x, std::string input);
 	void plotDown(int y, int x, std::string input);
 
-	void plotCompass();
-	void plotHeaders();
-	void plotScale();
+	void plotElements();
 	void plotPoints();
 
 	bool checkExistName(std::string name);

@@ -16,7 +16,6 @@ Hashmap::~Hashmap() {
     delete[] table;
 }
 
-
 Hashmap::Hashmap() :
 	current_array_size(4), //initial array size, array size track
 	minimum_array_size(4), //const, array size lower bound
@@ -50,13 +49,11 @@ void Hashmap::print() const {
 
 int Hashmap::hasher(const std::string name) const
 {
-	int n = 1;
-    int hash = 0;
-
+	int hash = 5381;
     for (char c : name) {
-        hash += n * (int) tolower(c);
-        n *= multiplier;
-    }
+        hash = ((hash << 5) + hash) + static_cast<unsigned char>(c);
+	}
+
     return hash;
 }
 
@@ -206,6 +203,23 @@ Waypoint* Hashmap::find(std::string name) const {
     	}
     }
     return nullptr;
+}
+
+bool Hashmap::count(std::string name) const {
+    int index = hasher(name) % current_array_size;
+    hash_node* current = table[index];
+    while (current != nullptr)
+    {
+        if (current->data->getName() == name)
+        {
+            return true;
+        }
+    	else
+    	{
+            current = current->next;
+    	}
+    }
+    return false;
 }
 
 void Hashmap::remove(std::string name)

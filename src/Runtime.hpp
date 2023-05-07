@@ -15,13 +15,16 @@ using Command = std::function<void(const std::vector<std::string>&)>;
 class Runtime
 {
 public:
-	bool booleanQuestion();
-	std::string stringInput();
 	Runtime();
-	void greetMessage();
-	void invalidCommandMessage();
-	
 	void run();
+	
+	void invalidCommandMessage();
+	void illegalCharacterMessage();
+	void greetMessage();
+	
+	std::string stringInput();
+	bool booleanQuestion();
+	
 	void addCommand(const std::string& key, Command code);
 	void addLambdas();
 private:
@@ -31,6 +34,7 @@ private:
 	std::string file_name;	
 	bool clear_next_enter;
 	bool run_state;
+	
 	std::unordered_map<std::string, Command> command_map;
 };
 

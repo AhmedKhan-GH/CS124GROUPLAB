@@ -17,6 +17,8 @@ public:
 	void remove(std::string name);
 
     Waypoint* find(std::string name) const;
+
+	bool count(std::string name) const;
     // finds the Waypoint that has a given name
 
     int hasher(const std::string name) const;
@@ -25,7 +27,6 @@ public:
     int element_count() const;
     void print() const;
 private:
-
 	// Node for sheparate chaining
 	struct hash_node
 	{

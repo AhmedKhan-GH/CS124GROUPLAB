@@ -86,6 +86,13 @@ void Runtime::invalidCommandMessage()					//informing user of invalid command
 	std::endl;
 }
 
+void Runtime::illegalCharacterMessage()
+{
+	std::cout <<
+	std::endl << "illegal characters '{}:;,\\/', try agian" <<
+	std::endl;
+}
+
 void Runtime::run()
 {
 	addLambdas(); 							//initializing map of events
@@ -94,7 +101,11 @@ void Runtime::run()
 	{
 		std::cout << std::endl << "> "; 			//prompt for input
 		std::string input;
+
 		std::getline(std::cin, input);
+		
+		if(input.find_first_of("{}:;,\\/") != std::string::npos){illegalCharacterMessage(); continue;}
+		
 		std::istringstream iss(input);
 
 		std::string command_token;				//command token
