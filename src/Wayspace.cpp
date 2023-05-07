@@ -14,10 +14,26 @@ void Wayspace::listWaypoints()
 {
 	std::cout <<
 	std::endl;
+
+	if(waypoints.empty())
+	{
+		std::cout <<
+		std::endl << "no waypoints in map" <<
+		std::endl;
+	}
+
 	for(auto& point : waypoints)
 	{
-		std::cout << point->getName() <<
+		std::cout << encodeUUID(point->getUUID()) << " : " << point->getName() << " : <" <<  point->getY() << "," << point->getX() << ">" <<
 		std::endl;
+	}
+}
+
+void Wayspace::plotPoints()
+{
+	for(auto& point : waypoints)
+	{
+		plotRight(point->getY(), point->getX(), "@"+encodeUUID(point->getUUID()));
 	}
 }
 
@@ -80,6 +96,7 @@ int Wayspace::getScale()
 	return this->scale;
 }
 
+
 void Wayspace::plotCompass()
 {
 	plotRight(2, 75, "<W+E>");
@@ -94,8 +111,8 @@ void Wayspace::plotScale()
 void Wayspace::plotHeaders()
 {
 
-	plotRight(0, 0, "[viewing '" + name  + "']");
-	plotRight(21, 0, "['exitmap' to return]");
+	plotRight(0, 0, "(viewing '" + name  + "')");
+	plotRight(21, 0, "('exitmap' to return)");
 }
 
 void Wayspace::plotRight(int y, int x, std::string input)
@@ -167,4 +184,34 @@ void Wayspace::deactivate()
 	scale = 0;
 	scale_set = false;
 	accumulator = 0;
+}
+
+std::string Wayspace::encodeUUID(int uuid)
+{
+	const std::string alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const int base = alphabet.size();
+    std::string result = "";
+    
+    while (uuid > 0) {
+    	uuid -= 1;
+        int remainder = uuid % base;
+        result = alphabet[remainder] + result;
+        uuid /= base;
+    }
+    
+    return result;
+}
+
+int Wayspace::decodeUUID(std::string coda)
+{
+	  const std::string alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const int base = alphabet.size();
+    int result = 0;
+    
+    for (const char& letter : coda) {
+        int value = alphabet.find(letter);
+        result = result * base + (value + 1);
+    }
+    
+    return result;
 }

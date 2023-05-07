@@ -12,4 +12,13 @@ int Waypoint::getUUID()
 	return uuid;
 }
 
+int Waypoint::getX()
+{
+	return x;
+}
+
+int Waypoint::getY()
+{
+	return y;
+}
 

@@ -224,6 +224,7 @@ auto showMapLambda = [this](const std::vector<std::string>& params)
 	space.plotCompass();
 	space.plotHeaders();
 	space.plotScale();
+	space.plotPoints();
 	//this is plotted last as it overrwrites anything under it
 
 	space.printSpace();
@@ -344,7 +345,7 @@ auto addWaypointLambda = [this](const std::vector<std::string>& params)
 	space.addWaypoint(tempy, tempx, params[0]);
 
 	std::cout <<
-	std::endl << "added waypoint '" << params[0] << "' to <" << tempy << "," << tempx << "> <y,x>" <<
+	std::endl << "added waypoint '" << params[0] << "' to <" << tempy << "," << tempx << ">" <<
 	std::endl;
 };
 addCommand("addpoint", addWaypointLambda);

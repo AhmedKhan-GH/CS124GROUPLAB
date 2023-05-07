@@ -31,6 +31,7 @@ public:
 	void plotCompass();
 	void plotHeaders();
 	void plotScale();
+	void plotPoints();
 
 	bool checkExistName(std::string name);
 	bool checkExistUUID(int uuid);
@@ -38,6 +39,9 @@ public:
 	void setScale(int scale);
 	void setName(std::string name);
 	void setUnit(std::string unit);
+
+	std::string encodeUUID(int uuid);
+	int decodeUUID(std::string coda);
 
 private:
 	int accumulator;
