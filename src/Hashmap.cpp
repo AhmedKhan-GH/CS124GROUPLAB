@@ -206,5 +206,5 @@ Waypoint* hashmap::find(std::string name) const {
             current = current->next;
     	}
     }
-    return nullchar; // failed to find char
+    return nullptr; // failed to find char
 }

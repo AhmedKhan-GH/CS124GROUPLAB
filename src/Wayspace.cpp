@@ -4,10 +4,11 @@ Wayspace::Wayspace() : active(false), scale_set(false) {}
 
 Wayspace::~Wayspace()
 {
-	for(auto& point : waypoint_vec)
+	for(Waypoint* point : waypoint_vec)
 	{
 		delete point;
 	}
+	delete waypoint_map;
 }
 
 void Wayspace::listWaypoints()
@@ -22,7 +23,7 @@ void Wayspace::listWaypoints()
 		std::endl;
 	}
 
-	for(auto& point : waypoint_vec)
+	for(Waypoint* point : waypoint_vec)
 	{
 		std::cout << point->getName() << " : <" <<  point->getY() << "," << point->getX() << ">" << std::endl;
 	}
@@ -30,13 +31,13 @@ void Wayspace::listWaypoints()
 
 void Wayspace::viewPoint(std::string name)
 {
-	//auto& point = waypoint_map.find(name);
-	//point->viewPoint();
+	Waypoint* point = waypoint_map.find(name);
+	point->viewPoint();
 }
 
 void Wayspace::plotPoints()
 {
-	for(auto& point : waypoint_vec)
+	for(Waypoint* point : waypoint_vec)
 	{
 		plotRight(point->getY(), point->getX(), "@"+point->getName());
 	}
@@ -46,18 +47,15 @@ void Wayspace::addWaypoint(int y, int x, std::string name)
 {
 	Waypoint* new_point = new Waypoint(y, x, name);
 	waypoint_vec.push_back(new_point);
-	//waypoint_map.insert(new_point);
+	waypoint_map.insert(new_point);
 }
 
 bool Wayspace::checkExistName(std::string name)
 {
-	bool exists = false;
-	for(auto& point : waypoint_vec)
+	bool exists = true;
+	if (waypoint_map.find(name) == nullptr)
 	{
-		if(point->getName() == name)
-		{
-			exists = true;
-		}
+		exists = false;
 	}
 	return exists;
 }
@@ -176,4 +174,3 @@ void Wayspace::deactivate()
 	scale = 0;
 	scale_set = false;
 }
-

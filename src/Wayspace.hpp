@@ -56,8 +56,7 @@ private:
 
 	char ascii_grid[22][80];
 	std::vector<Waypoint*> waypoint_vec;
-	//hashmap lookup_table;
-	//Hashmap waypoint_map;
+	Hashmap waypoint_map;
 };
 
 
