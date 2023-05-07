@@ -170,35 +170,31 @@ auto addWaypointLambda = [this](const std::vector<std::string>& params)
 };
 addCommand("addpoint", addWaypointLambda);
 
-/*
-	preferable to put this in a sort.cpp class and just call it from here
-	test this
-	auto sortWaypointsLambda = [](const std::vector<std::string>& params)
-	{
-		if (Waypoint.empty()) return;
 
-			std::function<void(int, int)> quicksort;
-			quicksort = [&](int start, int end)
+auto sortWaypointsLambda = [](const std::vector<std::string>& params)
+{
+	if (space.empty()) return;
+		std::function<void(int, int)> quicksort;
+		quicksort = [&](int start, int end)
+		{
+			if (start >= end) return;
+			int pivot = space[(start + end) / 2].get_feature(params[0]);
+			int i = start, j = end;
+			while (i <= j)
 			{
-				if (start >= end) return;
-				int pivot = Waypoint[(start + end) / 2].get_feature(params[0]);
-				int i = start, j = end;
-				while (i <= j)
-			{
-						while (Waypoint[i].get_feature(params[0]) < pivot) i++;
-						while (Waypoint[j].get_feature(params[0]) > pivot) j--;
-						if (i <= j)
+				while (space[i].get_feature(params[0]) < pivot) i++;
+				while (sapce[j].get_feature(params[0]) > pivot) j--;
+				if (i <= j)
 				{
-							std::swap(Waypoint[i], Waypoint[j]);
-							i++; j--;
-						}
+					std::swap(space[i], space[j]);
+					i++; j--;
 				}
+			}
 			quicksort(start, j);
 			quicksort(i, end);
 		};
-		quicksort(0, Waypoint.size() - 1);
+		quicksort(0, space.size() - 1);
 	};
 	addCommand("sortwaypoints", sortWaypointsLambda);
-*/
 }
 
