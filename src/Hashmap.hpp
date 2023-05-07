@@ -1,6 +1,6 @@
 #ifndef HASHMAP_HPP
 #define HASHMAP_HPP
-#include "waypoint.hpp"
+#include "Waypoint.hpp"
 #include <string>
 
 
