@@ -41,7 +41,7 @@ void Hashmap::print() const {
         std::cout << "Bucket " << i << ": ";
         hash_node* current = table[i];
         while (current != nullptr) {
-            std::cout << current->data->name;
+            std::cout << current->data->getName();
             current = current->next;
         }
         std::cout << std::endl;
@@ -112,7 +112,7 @@ void Hashmap::resize_if_necessary()
 
 				// Compute the new index
 				int new_index =
-			hasher(node->data.name) % new_array_size;
+			hasher(node->data->getName()) % new_array_size;
 
 
 			    // Insert the element into new bucket
@@ -171,7 +171,7 @@ void Hashmap::insert(Waypoint* data)
 {
 	resize_if_necessary();
 
-	int new_index = hasher(data->name) % current_array_size;
+	int new_index = hasher(data->getName()) % current_array_size;
 
 	hash_node* new_node = new hash_node;
     	new_node->data = data;
@@ -197,7 +197,7 @@ Waypoint* Hashmap::find(std::string name) const {
     hash_node* current = table[index];
     while (current != nullptr)
     {
-        if (current->data->name == name)
+        if (current->data->getName() == name)
         {
             return current->data;
         }
