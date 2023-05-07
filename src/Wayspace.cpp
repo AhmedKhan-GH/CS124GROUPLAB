@@ -13,6 +13,8 @@ Wayspace::~Wayspace()
 void Wayspace::undoAdd()
 {
 	Waypoint* popped = waypoint_stack.top();
+
+	if(waypoint_vec.empty()){std::cout << std::endl << "there are no additions to undo" << std::endl; return;}
 	waypoint_stack.pop();
 	for(auto& point : waypoint_vec)
 	{
