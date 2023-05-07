@@ -8,7 +8,6 @@ Wayspace::~Wayspace()
 	{
 		delete point;
 	}
-	delete waypoint_map;
 }
 
 void Wayspace::listWaypoints()
@@ -25,15 +24,14 @@ void Wayspace::listWaypoints()
 
 	for(auto& point : waypoint_vec)
 	{
-		std::cout << point->getName() << " : <" <<  point->getY() << "," << point->getX() << ">" <<
-		std::endl;
+		std::cout << point->getName() << " : <" <<  point->getY() << "," << point->getX() << ">" << std::endl;
 	}
 }
 
 void Wayspace::viewPoint(std::string name)
 {
-	auto& point = waypoint_map.find(name);
-	point->viewPoint();
+	//auto& point = waypoint_map.find(name);
+	//point->viewPoint();
 }
 
 void Wayspace::plotPoints()
@@ -46,9 +44,9 @@ void Wayspace::plotPoints()
 
 void Wayspace::addWaypoint(int y, int x, std::string name)
 {
-	waypoints.push_back(new Waypoint(y, x, name));
-	waypoint_vec.push_back(newPoint);
-	waypoint_map.insert(newPoint);
+	Waypoint* new_point = new Waypoint(y, x, name);
+	waypoint_vec.push_back(new_point);
+	//waypoint_map.insert(new_point);
 }
 
 bool Wayspace::checkExistName(std::string name)

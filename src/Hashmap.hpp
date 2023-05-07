@@ -4,12 +4,12 @@
 #include <string>
 
 
-class hashmap
+class Hashmap
 {
 public:
 
-	~hashmap();
-    hashmap(); //constructor to set consts
+	~Hashmap();
+    Hashmap(); //constructor to set consts
 
     void insert(Waypoint* data);
     // adds a new element to the hash map
