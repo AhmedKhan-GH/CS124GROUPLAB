@@ -8,9 +8,17 @@ void Runtime::addLambdas()
 auto undoAddLambda = [this](const std::vector<std::string>& params){
 	if(!space.getActive()){std::cout << std::endl << "there is no map in system" << std::endl; return;}
 	space.undoAdd();
-
 }; addCommand("undoadd", undoAddLambda);
 
+auto removeFeatureLambda = [this](const std::vector<std::string>& params)
+{
+	if(!space.getActive()){std::cout << std::endl << "there is no map in system" << std::endl; return;}
+	if(params.empty()){std::cout << std::endl << "no parameters provided" << std::endl; return;}
+	if(!space.checkExistName(params[0])){std::cout << std::endl << "given point doesn't exist" << std::endl; return;}
+	if(params.size() < 2){std::cout << std::endl << "not all parameters provided" << std::endl; return;}
+	space.pullFeature(params[0], params[1]);
+	std::cout << std::endl << "removed '" << params[1] << "' from '" << params[0] << "'" << std::endl;
+}; addCommand("rmvfeat", removeFeatureLambda);
 
 auto listPointsLambda = [this](const std::vector<std::string>& params){
 	if(!space.getActive()) {std::cout << std::endl << "there is no map in system" << std::endl; return;}
@@ -68,6 +76,7 @@ auto helpLambda = [](const std::vector<std::string>& params){
 	std::endl << "addpoint <name> <y> <x>: add given waypoint to map" <<
 	std::endl << "undoadd: remove instance of add back to last filesave" <<
 	std::endl << "addfeat <name> <feature> <number>: add metric to waypoint" <<
+	std::endl << "rmvfeat <name> <feature>: remove metric to waypoint" <<
 	std::endl << "rankfeat <feature>: rank all waypoints with given feature" <<
 	std::endl << "viewpoint <name>: list coord and all metrics of a point" <<
 

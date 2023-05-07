@@ -21,7 +21,6 @@ void Wayspace::pushFeature(std::string point, std::string type, double metric)
 }
 
 void Wayspace::undoAdd()
-
 {
 	if(waypoint_stack.size() == 0){std::cout << std::endl << "no additions to undo" << std::endl; return;}
 	Waypoint* popped = waypoint_stack.top();
@@ -57,18 +56,11 @@ void Wayspace::rankFeatures(std::string type)
 			temp_vec.push_back(point);
 		}
 	}
-	std::cout << std::endl;
-	for(auto& point : temp_vec)
-	{
-		std::cout << point->getName() << ", ";
-	}
 }
 
 void Wayspace::viewPoint(std::string name)
 {
-	
-	waypoint_map.find(name)->viewPoint();
-	
+	waypoint_map.find(name)->viewPoint();	
 }
 
 void Wayspace::plotPoints(){for(auto& point : waypoint_vec){plotRight(point->getY(), point->getX(), "@"+point->getName());}}
