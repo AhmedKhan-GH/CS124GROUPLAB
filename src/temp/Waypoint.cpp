@@ -32,7 +32,7 @@ int Waypoint::get_feature(std::string feature) const {
     }
     else
     {
-        std::cerr << "Error: Key not found in map\n";
+        //std::cerr << "Error: Key not found in map\n";
         return -1;
     }
 }

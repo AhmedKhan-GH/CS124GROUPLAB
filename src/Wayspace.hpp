@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include "Waypoint.hpp"
 #include "Hashmap.hpp"
+#include "Quicksort.hpp"
 #include "Stack.hpp"
 #include <algorithm>
 class Wayspace

@@ -10,7 +10,8 @@ set(SOURCE_FILES
 	Lambdas.cpp	
 	Waypoint.cpp
 	Hashmap.cpp
-	Stack.cpp	
+	Stack.cpp
+	Quicksort.cpp	
 )
 
 # Create an executable target

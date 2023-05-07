@@ -19,7 +19,6 @@ private:
 	int x;
 	std::string name;
 	std::unordered_map<std::string, double> features;
-
 };
 
 #endif //WAYPOINT_HPP

@@ -56,6 +56,13 @@ void Wayspace::rankFeatures(std::string type)
 			temp_vec.push_back(point);
 		}
 	}
+	Quicksort::quicksort(temp_vec, type);
+	
+	std::cout << std::endl << "waypoints ranked by '" << type << "'" << std::endl;
+	for(auto& point : temp_vec)
+	{
+		std::cout << point->getName() << " : <" << point->getX() << "," << point->getY() << "> : "  << point->getFeature(type) << std::endl;
+	}
 }
 
 void Wayspace::viewPoint(std::string name)
