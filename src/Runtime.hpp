@@ -27,7 +27,7 @@ public:
 	void addCommand(const std::string& key, Command code);
 	void addLambdas();
 private:
-	FileManager* file_manager;
+	FileManager file_manager;
 	Wayspace space;
 
 	std::string file_name;	

@@ -15,6 +15,7 @@ public:
 	
 	void addWaypoint(int y, int x, std::string name);
 	void listWaypoints();
+	void viewPoint(std::string name);
 
 	void activate();
 	void deactivate();

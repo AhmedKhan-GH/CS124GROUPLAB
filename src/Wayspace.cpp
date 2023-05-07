@@ -29,6 +29,17 @@ void Wayspace::listWaypoints()
 	}
 }
 
+void Wayspace::viewPoint(std::string name)
+{
+	for(auto& point : waypoints)
+	{
+		if(point->getName() == name)
+		{
+			point->viewPoint();
+		}
+	}
+}
+
 void Wayspace::plotPoints()
 {
 	for(auto& point : waypoints)
@@ -204,7 +215,7 @@ std::string Wayspace::encodeUUID(int uuid)
 
 int Wayspace::decodeUUID(std::string coda)
 {
-	  const std::string alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	const std::string alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const int base = alphabet.size();
     int result = 0;
     

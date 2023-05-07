@@ -1,35 +1,37 @@
 #include "Runtime.hpp"
 
-Runtime::Runtime() : run_state(true), clear_next_enter(false) {}
+//runtime constructor intializing booleans
+Runtime::Runtime() : run_state(true), clear_next_enter(false), file_name("") {}
 
-void Runtime::addCommand(const std::string& key, Command code)		//add new command lambda to map
+//add new command lambda to map
+void Runtime::addCommand(const std::string& key, Command code)
 {
 	command_map.insert({key, code});
 }
 
+//this function takes a string input and verifies input isnt empty
 std::string Runtime::stringInput()
 {
 	std::string input;
 	bool verified = false;
 	do
 	{
+		//terminating at enter
 		std::getline(std::cin, input, '\n');
-		if(input.length() == 0)
+		if(input.length() == 0) //if empty, reprompt
 		{
 			std::cout <<
 		 	std::endl << "blank, try again: ";
 		}
 		else
 		{
-			verified = true;
+			verified = true; //exit if successful
 		}
 	}while(!verified);
 	return input;
 }
 
-//COMPLETE
-//this function uses string_input to return a bool based
-//on user input
+//this function uses string_input to return a bool based on user input
 bool Runtime::booleanQuestion()
 {
 	bool verified = false; //determines if question

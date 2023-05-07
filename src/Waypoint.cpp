@@ -2,6 +2,11 @@
 
 Waypoint::Waypoint(int y, int x, std::string name, int uuid) : y(y), x(x), name(name), uuid(uuid) {}
 
+void Waypoint::viewPoint()
+{
+	
+}
+
 std::string Waypoint::getName()
 {
 	return name;

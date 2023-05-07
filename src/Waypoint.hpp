@@ -9,6 +9,7 @@ public:
 	int getUUID();
 	int getX();
 	int getY();
+	void viewPoint();
 private:
 	int y;
 	int x;
