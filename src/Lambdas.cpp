@@ -160,8 +160,8 @@ auto addWaypointLambda = [this](const std::vector<std::string>& params)
 	{std::cout << std::endl << "y coordinate not numeric" << std::endl; return;}
 	if(params[2].find_first_not_of("-0123456789") != std::string::npos)
 	{std::cout << std::endl << "x coordinate not numeric" << std::endl;return;}
-	int tempy = std::__cxx11::stoi(params[1]);
-	int tempx = std::__cxx11::stoi(params[2]);
+	int tempy = std::stoi(params[1]);
+	int tempx = std::stoi(params[2]);
 	if(tempy > 21 || tempy < 0){std::cout << std::endl << "y coordinate out of bounds" << std::endl; return;}
 	if(tempx > 79 || tempx < 0){std::cout << std::endl << "x coordinate out of bounds" << std::endl; return;}
 	if(space.checkExistName(params[0])) {std::cout << std::endl << "'" << params[0] << "' already exists in map" << std::endl; return;}

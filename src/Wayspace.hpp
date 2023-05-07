@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <vector>
+#include <unordered_map>
 #include "Waypoint.hpp"
 class Wayspace
 {

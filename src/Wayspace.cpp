@@ -116,7 +116,7 @@ void Wayspace::plotCompass()
 
 void Wayspace::plotScale()
 {
-	plotRight(1, 0, "<-+-> " + std::__cxx11::to_string(scale*5) + " " + unit + "(s)");
+	plotRight(1, 0, "<-+-> " + std::to_string(scale*5) + " " + unit + "(s)");
 }
 
 void Wayspace::plotHeaders()
