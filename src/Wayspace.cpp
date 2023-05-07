@@ -4,10 +4,7 @@ Wayspace::Wayspace() : active(false), scale_set(false) {}
 
 Wayspace::~Wayspace()
 {
-	for(Waypoint* point : waypoint_vec)
-	{
-		point = nullptr;
-	}
+	waypoint_vec.clear();
 	waypoint_map.~Hashmap();
 }
 

@@ -17,6 +17,12 @@ public:
     Waypoint* find(std::string name) const;
     // finds the Waypoint that has a given name
 
+	void clear();
+	// removes all elements from hashmap without deleting the elements
+
+	void remove(std::string name);
+	// removes a specific element by name`
+
     int hasher(const std::string name) const;
 	void resize_if_necessary();
     int bucket_count() const;
