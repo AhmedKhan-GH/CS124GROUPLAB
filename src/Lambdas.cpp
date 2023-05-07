@@ -5,12 +5,17 @@
 void Runtime::addLambdas()
 {
 
-auto listPointsLambda = [this](const std::vector<std::string>& params)
-{
+auto undoAddLambda = [this](const std::vector<std::string>& params){
+	if(!space.getActive()){std::cout << std::endl << "there is no map in system" << std::endl; return;}
+	space.undoAdd();
+
+}; addCommand("undoadd", undoAddLambda);
+
+
+auto listPointsLambda = [this](const std::vector<std::string>& params){
 	if(!space.getActive()) {std::cout << std::endl << "there is no map in system" << std::endl; return;}
 	space.listWaypoints();
-};
-addCommand("listpoints", listPointsLambda);
+}; addCommand("listpoints", listPointsLambda);
 
 auto viewPointLambda = [this](const std::vector<std::string>& params){
 	if(!space.getActive()){std::cout << std::endl << "there is no map in system" << std::endl; return;}
@@ -89,7 +94,7 @@ auto loadMapLambda = [this](const std::vector<std::string>& params)
 
 auto saveMapLambda = [this](const std::vector<std::string>& params)
 {
-	if(FileManager::doesFileExist(params[0])) {std::cout << std::endl << "are you sure you want to overwrite " << params[0] << "? ";
+	if(FileManager::doesFileExist(params[0])) {std::cout << std::endl << "are you sure you want to overwrite '" << params[0] << "'? ";
 		if(!this->booleanQuestion()) //user says no, if statement triggers and lambda returns
 		{
 			std::cout << std::endl << "file saving cancelled" << std::endl;

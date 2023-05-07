@@ -13,7 +13,6 @@ private:
 	int y;
 	int x;
 	std::string name;
-	int uuid;
 };
 
 #endif //WAYPOINT_HPP

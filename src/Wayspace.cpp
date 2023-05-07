@@ -10,6 +10,25 @@ Wayspace::~Wayspace()
 	}
 }
 
+void Wayspace::undoAdd()
+{
+	Waypoint* popped = waypoint_stack.top();
+	waypoint_stack.pop();
+	for(auto& point : waypoint_vec)
+	{
+		if(point == popped)
+		{
+			std::swap(point, waypoint_vec.back());
+			waypoint_vec.pop_back();
+		}
+	}
+
+	waypoint_map.remove(popped->getName());
+	std::cout << std::endl << "'" << popped->getName() << "' successfully removed" << std::endl;
+	delete popped;
+}
+
+
 void Wayspace::listWaypoints()
 {
 	std::cout <<
@@ -46,6 +65,7 @@ void Wayspace::addWaypoint(int y, int x, std::string name)
 {
 	Waypoint* new_point = new Waypoint(y, x, name);
 	waypoint_vec.push_back(new_point);
+	waypoint_stack.push(new_point);
 	//waypoint_map.insert(new_point);
 }
 

@@ -14,6 +14,8 @@ public:
     void insert(Waypoint* data);
     // adds a new element to the hash map
 
+	void remove(std::string name);
+
     Waypoint* find(std::string name) const;
     // finds the Waypoint that has a given name
 
@@ -32,7 +34,6 @@ private:
 		hash_node* next = nullptr;
 		//hash node is a linked list element
 	};
-
 
 	const double load_factor;
 	const int minimum_array_size;

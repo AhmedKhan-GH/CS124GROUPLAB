@@ -6,6 +6,8 @@
 #include <unordered_map>
 #include "Waypoint.hpp"
 #include "Hashmap.hpp"
+#include "Stack.hpp"
+#include <algorithm>
 class Wayspace
 {
 public:
@@ -15,6 +17,7 @@ public:
 	void fillSpace(const char c);
 	void printSpace();
 
+	void undoAdd();
 	void addWaypoint(int y, int x, std::string name);
 	void listWaypoints();
 	void viewPoint(std::string name);
@@ -27,6 +30,7 @@ public:
 	bool getScaleSet();
 	std::string getName();
 	std::string getUnit();
+	
 
 	void plotRight(int y, int x, std::string input);
 	void plotDown(int y, int x, std::string input);
@@ -37,14 +41,10 @@ public:
 	void plotPoints();
 
 	bool checkExistName(std::string name);
-	bool checkExistUUID(int uuid);
 
 	void setScale(int scale);
 	void setName(std::string name);
 	void setUnit(std::string unit);
-
-	std::string encodeUUID(int uuid);
-	int decodeUUID(std::string coda);
 
 private:
 	int scale;
@@ -56,8 +56,8 @@ private:
 
 	char ascii_grid[22][80];
 	std::vector<Waypoint*> waypoint_vec;
-	//hashmap lookup_table;
-	//Hashmap waypoint_map;
+	Stack waypoint_stack;
+	Hashmap waypoint_map;
 };
 
 

@@ -1,10 +1,10 @@
 #include "Hashmap.hpp"
 #include <string>
-#include <stdexcept>
+
 #include <iostream>
 #include <functional>
 
-hashmap::~hashmap() {
+Hashmap::~Hashmap() {
     for (int i = 0; i < current_array_size; i++) {
         hash_node* current = table[i];
         while (current != nullptr) {
@@ -17,7 +17,7 @@ hashmap::~hashmap() {
 }
 
 
-hashmap::hashmap() :
+Hashmap::Hashmap() :
 	current_array_size(4), //initial array size, array size track
 	minimum_array_size(4), //const, array size lower bound
 
@@ -35,21 +35,20 @@ hashmap::hashmap() :
 	}
 }
 
-void hashmap::print() const {
+void Hashmap::print() const {
     std::cout << std::endl;
     for (int i = 0; i < current_array_size; i++) {
         std::cout << "Bucket " << i << ": ";
         hash_node* current = table[i];
         while (current != nullptr) {
-            std::cout << current->data->name;
+            std::cout << current->data->getName();
             current = current->next;
         }
         std::cout << std::endl;
     }
 }
 
-
-int hashmap::hasher(const std::string name) const
+int Hashmap::hasher(const std::string name) const
 {
 	int n = 1;
     int hash = 0;
@@ -64,7 +63,7 @@ int hashmap::hasher(const std::string name) const
 //resize_if_necessary determines of the hash_node* array has exceeded
 //a predefined load factor, and if so, transfers the map elements to
 //a new array that is double the size
-void hashmap::resize_if_necessary()
+void Hashmap::resize_if_necessary()
 {
 	bool need_to_resize = false;
 	int new_array_size = 0;
@@ -112,7 +111,7 @@ void hashmap::resize_if_necessary()
 
 				// Compute the new index
 				int new_index =
-			hasher(node->data.name) % new_array_size;
+			hasher(node->data->getName()) % new_array_size;
 
 
 			    // Insert the element into new bucket
@@ -147,7 +146,7 @@ void hashmap::resize_if_necessary()
 	}
 }
 
-int hashmap::bucket_count() const
+int Hashmap::bucket_count() const
 {
 	int count = 0;
 	for(int i = 0; i < current_array_size; i++)
@@ -161,17 +160,17 @@ int hashmap::bucket_count() const
 
 }
 
-int hashmap::element_count() const
+int Hashmap::element_count() const
 {
 	return this->current_num_elements;
 }
 
 // adds a new element to the hash map
-void hashmap::insert(Waypoint* data)
+void Hashmap::insert(Waypoint* data)
 {
 	resize_if_necessary();
 
-	int new_index = hasher(data->name) % current_array_size;
+	int new_index = hasher(data->getName()) % current_array_size;
 
 	hash_node* new_node = new hash_node;
     	new_node->data = data;
@@ -192,12 +191,12 @@ void hashmap::insert(Waypoint* data)
 }
 
 // finds the Waypoint with a given name
-Waypoint* hashmap::find(std::string name) const {
+Waypoint* Hashmap::find(std::string name) const {
     int index = hasher(name) % current_array_size;
     hash_node* current = table[index];
     while (current != nullptr)
     {
-        if (current->data->name == name)
+        if (current->data->getName() == name)
         {
             return current->data;
         }
@@ -206,5 +205,33 @@ Waypoint* hashmap::find(std::string name) const {
             current = current->next;
     	}
     }
-    return nullchar; // failed to find char
+    return nullptr;
+}
+
+void Hashmap::remove(std::string name)
+{
+	int index = hasher(name) % current_array_size;
+    hash_node* current = table[index];
+	hash_node* prev = nullptr;
+   	while (current != nullptr) {
+        if (current->data->getName() == name) {
+            if (prev == nullptr) {
+                // If the node to remove is the first node in the list
+                table[index] = current->next;
+            } else {
+                // If the node to remove is in the middle or end of the list
+                prev->next = current->next;
+			}
+
+            // Delete the node from the map
+            delete current;
+
+            // Break out of the loop as the node has been removed
+            break;
+        } else {
+            prev = current;
+            current = current->next;
+        }
+    }
+
 }

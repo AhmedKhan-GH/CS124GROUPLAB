@@ -6,10 +6,8 @@
 
 #include "FileManager.hpp"
 #include "Wayspace.hpp"
-#include "Waypoint.hpp"
 #include <iostream>
 #include <unordered_map>
-#include <vector>
 #include <functional>
 
 using Command = std::function<void(const std::vector<std::string>&)>;
