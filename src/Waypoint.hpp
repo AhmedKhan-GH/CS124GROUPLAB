@@ -4,9 +4,8 @@
 class Waypoint
 {
 public:
-	Waypoint(int y, int x, std::string name, int uuid);
+	Waypoint(int y, int x, std::string name);
 	std::string getName();
-	int getUUID();
 	int getX();
 	int getY();
 	void viewPoint();

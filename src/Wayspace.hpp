@@ -46,7 +46,6 @@ public:
 	int decodeUUID(std::string coda);
 
 private:
-	int accumulator;
 	int scale;
 	std::string name;
 	std::string unit;
@@ -56,6 +55,7 @@ private:
 
 	char ascii_grid[22][80];
 	std::vector<Waypoint*> waypoints;
+	//hashmap lookup_table;
 };
 
 

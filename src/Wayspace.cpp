@@ -1,6 +1,6 @@
 #include "Wayspace.hpp"
 
-Wayspace::Wayspace() : active(false), scale_set(false), accumulator(0) {}
+Wayspace::Wayspace() : active(false), scale_set(false) {}
 
 Wayspace::~Wayspace()
 {
@@ -24,7 +24,7 @@ void Wayspace::listWaypoints()
 
 	for(auto& point : waypoints)
 	{
-		std::cout << encodeUUID(point->getUUID()) << " : " << point->getName() << " : <" <<  point->getY() << "," << point->getX() << ">" <<
+		std::cout << point->getName() << " : <" <<  point->getY() << "," << point->getX() << ">" <<
 		std::endl;
 	}
 }
@@ -44,15 +44,13 @@ void Wayspace::plotPoints()
 {
 	for(auto& point : waypoints)
 	{
-		plotRight(point->getY(), point->getX(), "@"+encodeUUID(point->getUUID()));
+		plotRight(point->getY(), point->getX(), "@"+point->getName());
 	}
 }
 
 void Wayspace::addWaypoint(int y, int x, std::string name)
 {
-	
-	accumulator++;
-	waypoints.push_back(new Waypoint(y, x, name, accumulator));
+	waypoints.push_back(new Waypoint(y, x, name));
 }
 
 bool Wayspace::checkExistName(std::string name)
@@ -61,19 +59,6 @@ bool Wayspace::checkExistName(std::string name)
 	for(auto& point : waypoints)
 	{
 		if(point->getName() == name)
-		{
-			exists = true;
-		}
-	}
-	return exists;
-}
-
-bool Wayspace::checkExistUUID(int uuid)
-{
-	bool exists = false;
-	for(auto& point : waypoints)
-	{
-		if(point->getUUID() == uuid)
 		{
 			exists = true;
 		}
@@ -194,9 +179,9 @@ void Wayspace::deactivate()
 	fillSpace(char(' '));
 	scale = 0;
 	scale_set = false;
-	accumulator = 0;
 }
 
+/*
 std::string Wayspace::encodeUUID(int uuid)
 {
 	const std::string alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -226,3 +211,4 @@ int Wayspace::decodeUUID(std::string coda)
     
     return result;
 }
+*/
