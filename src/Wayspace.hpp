@@ -5,6 +5,7 @@
 #include <vector>
 #include <unordered_map>
 #include "Waypoint.hpp"
+#include "Hashmap.hpp"
 class Wayspace
 {
 public:
@@ -13,7 +14,7 @@ public:
 
 	void fillSpace(const char c);
 	void printSpace();
-	
+
 	void addWaypoint(int y, int x, std::string name);
 	void listWaypoints();
 	void viewPoint(std::string name);
@@ -55,7 +56,8 @@ private:
 	bool scale_set;
 
 	char ascii_grid[22][80];
-	std::vector<Waypoint*> waypoints;
+	std::vector<Waypoint*> waypoint_vec;
+	Hashmap waypoint_map;
 };
 
 
