@@ -4,10 +4,11 @@ Wayspace::Wayspace() : active(false), scale_set(false) {}
 
 Wayspace::~Wayspace()
 {
-	for(auto& point : waypoints)
+	for(auto& point : waypoint_vec)
 	{
 		delete point;
 	}
+	delete waypoint_map;
 }
 
 void Wayspace::listWaypoints()
@@ -15,14 +16,14 @@ void Wayspace::listWaypoints()
 	std::cout <<
 	std::endl;
 
-	if(waypoints.empty())
+	if(waypoint_vec.empty())
 	{
 		std::cout <<
 		std::endl << "no waypoints in map" <<
 		std::endl;
 	}
 
-	for(auto& point : waypoints)
+	for(auto& point : waypoint_vec)
 	{
 		std::cout << point->getName() << " : <" <<  point->getY() << "," << point->getX() << ">" <<
 		std::endl;
@@ -31,18 +32,13 @@ void Wayspace::listWaypoints()
 
 void Wayspace::viewPoint(std::string name)
 {
-	for(auto& point : waypoints)
-	{
-		if(point->getName() == name)
-		{
-			point->viewPoint();
-		}
-	}
+	auto& point = waypoint_map.find(name);
+	point->viewPoint();
 }
 
 void Wayspace::plotPoints()
 {
-	for(auto& point : waypoints)
+	for(auto& point : waypoint_vec)
 	{
 		plotRight(point->getY(), point->getX(), "@"+point->getName());
 	}
@@ -51,12 +47,14 @@ void Wayspace::plotPoints()
 void Wayspace::addWaypoint(int y, int x, std::string name)
 {
 	waypoints.push_back(new Waypoint(y, x, name));
+	waypoint_vec.push_back(newPoint);
+	waypoint_map.insert(newPoint);
 }
 
 bool Wayspace::checkExistName(std::string name)
 {
 	bool exists = false;
-	for(auto& point : waypoints)
+	for(auto& point : waypoint_vec)
 	{
 		if(point->getName() == name)
 		{
@@ -115,7 +113,7 @@ void Wayspace::plotRight(int y, int x, std::string input)
 {
 	for(int i = 0; i < input.length(); i++)
 	{
-		ascii_grid[y][x+i] = input[i];	
+		ascii_grid[y][x+i] = input[i];
 	}
 }
 
@@ -135,7 +133,7 @@ void Wayspace::fillSpace(const char c)
 		{
 			point = c;
 		}
-	}	
+	}
 }
 
 bool Wayspace::getActive()
@@ -147,7 +145,7 @@ void Wayspace::printSpace()
 {
 	system("clear");
 	for(auto& row : ascii_grid)
-	{	
+	{
 		for(char& point : row)
 		{
 			std::cout << point;
@@ -173,7 +171,7 @@ std::string Wayspace::getName()
 
 void Wayspace::deactivate()
 {
-	//	waypoints.clear();
+	//	waypoint_vec.clear();
 	name.clear();
 	active = false;
 	fillSpace(char(' '));
@@ -181,34 +179,3 @@ void Wayspace::deactivate()
 	scale_set = false;
 }
 
-/*
-std::string Wayspace::encodeUUID(int uuid)
-{
-	const std::string alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const int base = alphabet.size();
-    std::string result = "";
-    
-    while (uuid > 0) {
-    	uuid -= 1;
-        int remainder = uuid % base;
-        result = alphabet[remainder] + result;
-        uuid /= base;
-    }
-    
-    return result;
-}
-
-int Wayspace::decodeUUID(std::string coda)
-{
-	const std::string alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const int base = alphabet.size();
-    int result = 0;
-    
-    for (const char& letter : coda) {
-        int value = alphabet.find(letter);
-        result = result * base + (value + 1);
-    }
-    
-    return result;
-}
-*/

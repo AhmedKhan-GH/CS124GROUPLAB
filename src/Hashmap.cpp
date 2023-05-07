@@ -1,4 +1,4 @@
-#include "hashmap.hpp"
+#include "Hashmap.hpp"
 #include <string>
 #include <stdexcept>
 #include <iostream>
