@@ -6,9 +6,9 @@ Wayspace::~Wayspace()
 {
 	for(Waypoint* point : waypoint_vec)
 	{
-		delete point;
+		point = nullptr;
 	}
-	delete waypoint_map;
+	waypoint_map.~hashmap()
 }
 
 void Wayspace::listWaypoints()

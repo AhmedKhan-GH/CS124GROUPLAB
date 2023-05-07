@@ -22,13 +22,14 @@ public:
     int bucket_count() const;
     int element_count() const;
     void print() const;
+
 private:
 
 	// Node for sheparate chaining
 	struct hash_node
 	{
 		Waypoint* data;
-		//pair of char, and cipher string key-value pairs
+
 		hash_node* next = nullptr;
 		//hash node is a linked list element
 	};
