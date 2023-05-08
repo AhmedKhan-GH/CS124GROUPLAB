@@ -94,16 +94,16 @@ auto helpLambda = [](const std::vector<std::string>& params){
 	std::endl << "exitmap: exit waypoint map visualizer" <<
 	std::endl << "setscale <number> <name>: set map distance scale" <<
 	std::endl <<
-	std::endl << "addpoint <name> <y> <x>: add given waypoint to map" <<
+	std::endl << "addpoint <name> <ypos> <xpos>: add given waypoint to map" <<
 	std::endl << "undoadd: remove instance of add back to last filesave" <<
+	std::endl << "viewpoint <name>: list coord and all metrics of a point" <<
+	std::endl <<
 	std::endl << "addfeat <name> <feature> <number>: add metric to waypoint" <<
 	std::endl << "rmvfeat <name> <feature>: remove metric to waypoint" <<
 	std::endl << "rankfeat <feature>: rank all waypoints with given feature" <<
-	std::endl << "viewpoint <name>: list coord and all metrics of a point" <<
-
+	std::endl <<
 	std::endl << "pathfind <name1> <name2>: potential (not optimal) path" <<
 	std::endl << "distfind <name1> <name2>: direct distance between points" <<
-
 	std::endl;
 }; addCommand("help", helpLambda);
 
@@ -136,33 +136,6 @@ auto infoLambda = [](const std::vector<std::string>& params){
 auto clearLambda = [this](const std::vector<std::string>& params) {
 	system("clear");
 }; addCommand("clear", clearLambda);
-
-/*
-auto loadMapLambda = [this](const std::vector<std::string>& params)
-{
-	if(params.empty()){std::cout << std::endl << "no filename provided" << std::endl; return;}
-	if(!FileManager::doesFileExist(params[0])){std::cout << std::endl << "file does not exist" << std::endl; return;}
-	if(params[0].substr(params[0].length() - 4) != ".txt"){std::cout << std::endl << "file is not a '.txt'" << std::endl;return;}
-	if(!FileManager::doesFileHaveMetadata(params[0])){std::cout << std::endl << "file is not formatted" << std::endl; return;}
-	this->file_name = params[0];
-}; addCommand("loadmap", loadMapLambda);
-
-auto saveMapLambda = [this](const std::vector<std::string>& params)
-{
-	if(FileManager::doesFileExist(params[0])) {std::cout << std::endl << "are you sure you want to overwrite '" << params[0] << "'? ";
-		if(!this->booleanQuestion()) //user says no, if statement triggers and lambda returns
-		{
-			std::cout << std::endl << "file saving cancelled" << std::endl;
-			return;
-		}
-	}
-
-	//savefile <filename.txt> will give filemanager class data
-	//from wayspace class and print it to a file, savefile
-	//should check if a file exists and ask if the user wants
-	//to overrwrite the data
-}; addCommand("savemap", saveMapLambda);
-*/
 
 auto exitMapLambda = [this](const std::vector<std::string>& params) {
 	this->show_map = false;
@@ -205,11 +178,9 @@ auto addWaypointLambda = [this](const std::vector<std::string>& params)
 {
 	if(!space.getActive()){std::cout << std::endl << "no map in system, use 'makemap <name>'" << std::endl; return;}
 	if(params.empty())
-	{	std::cout << std::endl << "no parameters provided, use 'help'" <<
-		std::endl << "addpoint <name> <ypos> <xpos>" << std::endl; return;}
+	{	std::cout << std::endl << "no parameters provided, use 'help'" << std::endl; return;}
 	if(params.size() < 3)
-	{	std::cout << std::endl << "not all parameters provided, use 'help'"<<
-		std::endl << "addpoint <name> <ypos> <xpos>" << std::endl; return;}
+	{	std::cout << std::endl << "not all parameters provided, use 'help'" << std::endl; return;}
 	if(params[1].find_first_not_of("-0123456789") != std::string::npos)
 	{std::cout << std::endl << "y coordinate not numeric" << std::endl; return;}
 	if(params[2].find_first_not_of("-0123456789") != std::string::npos)
