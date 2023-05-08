@@ -4,7 +4,7 @@
 #include <cstdlib> //for console clear commands
 #include <sstream> //for command parsing
 
-#include "FileManager.hpp"
+
 #include "Wayspace.hpp"
 #include <iostream>
 #include <unordered_map>
@@ -28,12 +28,11 @@ public:
 	void addCommand(const std::string& key, Command code);
 	void addLambdas();
 private:
-	FileManager file_manager;
 	Wayspace space;
 
 	std::string file_name;	
-	bool clear_next_enter;
 	bool run_state;
+	bool show_map;
 	
 	std::unordered_map<std::string, Command> command_map;
 };

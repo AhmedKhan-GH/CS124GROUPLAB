@@ -7,6 +7,7 @@
 #include "Waypoint.hpp"
 #include "Hashmap.hpp"
 #include "Quicksort.hpp"
+#include "Pathfinder.hpp"
 #include "Stack.hpp"
 #include <algorithm>
 class Wayspace
@@ -38,6 +39,9 @@ public:
 
 	void plotRight(int y, int x, std::string input);
 	void plotDown(int y, int x, std::string input);
+
+	void findPath(std::string start, std::string end);
+	double findDist(std::string start, std::string end);
 
 	void plotElements();
 	void plotPoints();

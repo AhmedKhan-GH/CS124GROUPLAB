@@ -10,6 +10,25 @@ Wayspace::~Wayspace()
 	}
 }
 
+double Wayspace::findDist(std::string start, std::string end)
+{
+	int dx = waypoint_map.find(start)->getX() - waypoint_map.find(end)->getX();
+    int dy = waypoint_map.find(start)->getY() - waypoint_map.find(end)->getY();
+    return std::sqrt(dx * dx + dy * dy);
+}
+
+void Wayspace::findPath(std::string start, std::string end)
+{
+	Pathfinder pathfinder(waypoint_vec);
+	std::vector<std::string> temp_vec = pathfinder.find_alternative_path(start, end);
+	std::cout << std::endl << "start -> ";
+	for(auto& point : temp_vec)
+	{
+		std::cout << point << " -> ";
+	}
+	std::cout << "end" << std::endl;
+}
+
 void Wayspace::pullFeature(std::string point, std::string type)
 {
 	waypoint_map.find(point)->removeFeature(type);

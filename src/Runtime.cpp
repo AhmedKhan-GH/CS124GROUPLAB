@@ -1,7 +1,7 @@
 #include "Runtime.hpp"
 
 //runtime constructor intializing booleans
-Runtime::Runtime() : run_state(true), clear_next_enter(false), file_name("") {}
+Runtime::Runtime() : run_state(true), file_name(""), show_map(false) {}
 
 //add new command lambda to map
 void Runtime::addCommand(const std::string& key, Command code)
@@ -99,6 +99,15 @@ void Runtime::run()
 	greetMessage(); 						//greet user
 	while(run_state)
 	{
+		
+		if(show_map)
+		{
+			system("clear");
+			command_map["showmap"]({});
+		}
+		
+		
+
 		std::cout << std::endl << "> "; 			//prompt for input
 		std::string input;
 
@@ -113,12 +122,6 @@ void Runtime::run()
 		
 		std::vector<std::string> param_tokens;			//parameter tokens
 		std::string parsed_param;
-		
-		if(clear_next_enter) 					//clear condition (called by showmap)
-		{
-			system("clear");
-			clear_next_enter = false;
-		}
 
 		while(iss >> parsed_param)				//parsing parameter tokens
 		{
@@ -133,5 +136,12 @@ void Runtime::run()
 		{
 			command_map[command_token](param_tokens);	//execution of event lambda
 		}
+
+		if(show_map)
+		{
+			system("clear");
+			command_map["showmap"]({});
+		}
+		
 	}
 }

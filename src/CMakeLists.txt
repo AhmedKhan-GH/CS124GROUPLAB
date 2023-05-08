@@ -6,12 +6,12 @@ set(SOURCE_FILES
     Runtime.cpp
     main.cpp
     Wayspace.cpp
-    FileManager.cpp
 	Lambdas.cpp	
 	Waypoint.cpp
 	Hashmap.cpp
 	Stack.cpp
 	Quicksort.cpp	
+	Pathfinder.cpp
 )
 
 # Create an executable target
