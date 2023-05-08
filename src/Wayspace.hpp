@@ -29,7 +29,6 @@ public:
 	void rankFeatures(std::string type);
 
 	void activate();
-	void deactivate();
 
 	int getScale();
 	bool getActive();

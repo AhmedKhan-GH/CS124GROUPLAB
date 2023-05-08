@@ -13,7 +13,6 @@ private:
 friend class Stack;   
 };
 
-
 /**
    An implementation of a stack as a sequence of nodes.
 */
@@ -24,6 +23,7 @@ public:
       Constructs an empty stack.
    */
    Stack();
+   ~Stack();
 
    /**
       Adds an element to the top of the stack.

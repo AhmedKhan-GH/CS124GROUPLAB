@@ -6,6 +6,17 @@ Stack::Stack()
    len = 0;
 }
 
+Stack::~Stack()
+{
+    while (first != nullptr) 
+    {
+        Node* temp = first;
+        first = first->next;
+        delete temp;
+    }
+}
+
+
 void Stack::push(Waypoint* element)
 {  
    Node* new_node = new Node;

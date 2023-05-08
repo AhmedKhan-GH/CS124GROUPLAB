@@ -4,6 +4,7 @@ Wayspace::Wayspace() : active(false), scale_set(false) {}
 
 Wayspace::~Wayspace()
 {
+	//stack and hashmap destructors called already
 	for(auto& point : waypoint_vec)
 	{
 		delete point;
@@ -155,13 +156,4 @@ void Wayspace::setName(std::string name){this->name = name;}
 void Wayspace::activate(){this->active = true;}
 std::string Wayspace::getName(){return this->name;}
 
-void Wayspace::deactivate()
-{
-	//	waypoint_vec.clear();
-	name.clear();
-	active = false;
-	fillSpace(char(' '));
-	scale = 0;
-	scale_set = false;
-}
 
