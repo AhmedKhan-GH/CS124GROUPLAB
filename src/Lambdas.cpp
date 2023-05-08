@@ -28,7 +28,7 @@ auto listPointsLambda = [this](const std::vector<std::string>& params){
 auto viewPointLambda = [this](const std::vector<std::string>& params){
 	if(!space.getActive()){std::cout << std::endl << "there is no map in system" << std::endl; return;}
 	if(params.empty()){std::cout << std::endl << "no parameters provided" << std::endl; return;}
-	if(!space.checkExistName(params[0])){std::cout << std::endl << "given point doesn't exist" << std::endl;}
+	if(!space.checkExistName(params[0])){std::cout << std::endl << "given point doesn't exist" << std::endl; return;}
 	space.viewPoint(params[0]);
 }; addCommand("viewpoint", viewPointLambda);
 
