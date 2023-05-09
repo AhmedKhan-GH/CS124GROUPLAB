@@ -110,8 +110,21 @@ int Wayspace::getScale(){return this->scale;}
 
 void Wayspace::plotElements()
 {
+	plotRight(5, 0, "5>");
+	plotRight(10, 0, "10>");
+	plotRight(15, 0, "15>");
+	plotRight(20, 0, "20>");
 	plotRight(2, 75, "<W+E>");
 	plotDown(0, 77, "^N+Sv");
+
+	plotRight(0, 10, "v10");
+	plotRight(0, 20, "v20");
+	plotRight(0, 30, "v30");
+	plotRight(0, 40, "v40");
+	plotRight(0, 50, "v50");
+	plotRight(0, 60, "v60");
+	plotRight(0, 70, "v70");
+
 	plotRight(1, 0, "<-+-> " + std::to_string(scale*5) + " " + unit + "(s)");
 	plotRight(0, 0, "(viewing '" + name  + "')");
 	plotRight(21, 0, "('exitmap' to return)");
